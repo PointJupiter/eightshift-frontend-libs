@@ -35,7 +35,7 @@ exports.handler = async (argv) => {
 
   await installStep({
     describe: `${step}. Cloning repo`,
-    thisHappens: cloneRepoTo('https://github.com/infinum/eightshift-boilerplate.git', projectPath, argv.eightshiftBoilerplateBranch ? argv.eightshiftBoilerplateBranch : ''),
+    thisHappens: cloneRepoTo(argv.eightshiftBoilerplateRepo ?? 'https://github.com/infinum/eightshift-boilerplate.git', projectPath, argv.eightshiftBoilerplateBranch ? argv.eightshiftBoilerplateBranch : ''),
   });
   step++;
 
