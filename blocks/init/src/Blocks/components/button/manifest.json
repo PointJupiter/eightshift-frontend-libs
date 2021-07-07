@@ -4,14 +4,15 @@
 	"componentClass": "btn",
 	"example": {
 		"attributes": {
-			"buttonContent": "This is a button",
+			"buttonContent": "This is button",
 			"buttonUrl": "https://infinum.github.io/eightshift-docs/",
 			"buttonId": "custom ID",
 			"buttonSize": "default",
 			"buttonColor": "primary",
 			"buttonWidth": "default",
+			"buttonAlign": "left",
+			"buttonJsClass": "js-click-me",
 			"buttonIsAnchor": false,
-			"buttonIsLink": false,
 			"buttonUse": true
 		}
 	},
@@ -38,6 +39,10 @@
 			"type": "string",
 			"default": "default"
 		},
+		"buttonAlign": {
+			"type": "string",
+			"default": "left"
+		},
 		"buttonIsAnchor": {
 			"type": "boolean",
 			"default": false
@@ -52,17 +57,36 @@
 		"buttonAriaLabel": {
 			"type": "string"
 		},
-		"buttonIsLink": {
-			"type": "boolean",
-			"default": false
+		"buttonJsClass": {
+			"type": "string"
 		},
 		"buttonUse": {
 			"type": "boolean",
 			"default": true
+		},
+		"buttonIconPosition": {
+			"type": "string",
+			"default": "left"
+		},
+		"iconUse": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"options": {
-		"buttonSize": [
+		"sizes": [
+			{
+				"label": "Flat",
+				"value": "flat"
+			},
+			{
+				"label": "Small",
+				"value": "small"
+			},
+			{
+				"label": "Medium",
+				"value": "medium"
+			},
 			{
 				"label": "Default",
 				"value": "default"
@@ -72,110 +96,38 @@
 				"value": "big"
 			}
 		],
-		"buttonWidth": [
+		"widths": [
 			{
 				"label": "Default",
 				"value": "default"
 			},
 			{
-				"label": "Block",
-				"value": "block"
+				"label": "Full width",
+				"value": "full-width"
 			}
 		],
-		"buttonColor": [
+		"iconPositions": [
+			{
+				"label": "Left",
+				"value": "left"
+			},
+			{
+				"label": "Center",
+				"value": "center"
+			},
+			{
+				"label": "Right",
+				"value": "right"
+			}
+		],
+		"aligns": [
+			"left",
+			"center",
+			"right"
+		],
+		"colors": [
 			"primary",
-			"black"
+			"blue-10"
 		]
-	},
-	"variables": {
-		"buttonColor": {
-			"primary": [
-				{
-					"variable": {
-						"button-color": "var(--global-colors-white)",
-						"button-color-hover": "var(--global-colors-white)",
-						"button-background-color": "var(--global-colors-primary)",
-						"button-background-color-hover": "var(--global-colors-black)",
-						"button-color-is-link": "var(--global-colors-primary)",
-						"button-color-is-link-hover": "var(--global-colors-black)"
-					}
-				}
-			],
-			"black": [
-				{
-					"variable": {
-						"button-color": "var(--global-colors-white)",
-						"button-color-hover": "var(--global-colors-white)",
-						"button-background-color": "var(--global-colors-black)",
-						"button-background-color-hover": "var(--global-colors-primary)",
-						"button-color-is-link": "var(--global-colors-black)",
-						"button-color-is-link-hover": "var(--global-colors-primary)"
-					}
-				}
-			]
-		},
-		"buttonSize": {
-			"default": [
-				{
-					"variable": {
-						"button-font-size": "0.8em",
-						"button-line-height": "1.4"
-					}
-				},
-				{
-					"breakpoint": "tablet",
-					"variable": {
-						"button-font-size": "1em"
-					}
-				}
-			],
-			"big": [
-				{
-					"variable": {
-						"button-font-size": "1em",
-						"button-line-height": "1.4"
-					}
-				},
-				{
-					"breakpoint": "tablet",
-					"variable": {
-						"button-font-size": "1.2em"
-					}
-				}
-			]
-		},
-		"buttonWidth": {
-			"default": [
-				{
-					"variable": {
-						"button-display": "inline-flex",
-						"button-width": "auto"
-					}
-				}
-			],
-			"block": [
-				{
-					"variable": {
-						"button-display": "flex",
-						"button-width": "100%"
-					}
-				}
-			]
-		},
-		"buttonIsLink": {
-			"true": [
-				{
-					"variable": {
-						"button-border-radius": "0",
-						"button-background-color": "transparent",
-						"button-background-color-hover": "transparent",
-						"button-padding-horizontal": "0",
-						"button-padding-vertical": "0",
-						"button-color": "var(--button-color-is-link)",
-						"button-color-hover": "var(--button-color-is-link-hover)"
-					}
-				}
-			]
-		}
 	}
 }

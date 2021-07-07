@@ -1,36 +1,181 @@
+$btn: (
+	colors: (
+		primary: (
+			normal: (
+				background-color: global-settings(colors, blue-9),
+				color: global-settings(colors, white),
+			),
+			hover: (
+				background-color: global-settings(colors, blue-7),
+			),
+		),
+		blue-10: (
+			normal: (
+				background-color: global-settings(colors, blue-10),
+				color: global-settings(colors, blue-2),
+			),
+			hover: (
+				background-color: global-settings(colors, blue-10),
+				color: global-settings(colors, blue-2),
+			),
+		),
+		bordered: (
+			normal: (
+				border: 1px solid global-settings(colors, blue-10),
+				background-color: global-settings(colors, transparent),
+				color: global-settings(colors, blue-2),
+			),
+			hover: (
+				border: 1px solid global-settings(colors, blue-10),
+				background-color: global-settings(colors, transparent),
+				color: global-settings(colors, blue-2),
+			),
+		),
+		transparent: (
+			normal: (
+				background-color: global-settings(colors, transparent),
+				color: global-settings(colors, white),
+			),
+			hover: (
+				background-color: global-settings(colors, transparent),
+				color: global-settings(colors, blue-5),
+			),
+		),
+		white: (
+			normal: (
+				background-color: global-settings(colors, white),
+				color: global-settings(colors, blue-7),
+				border: 1px solid global-settings(colors, blue-7),
+			),
+			hover: (
+				background-color: global-settings(colors, white),
+				color: global-settings(colors, blue-7),
+				border: 1px solid global-settings(colors, blue-7),
+			),
+		),
+	),
+	sizes: (
+		mobile: (
+			flat: (
+				padding: 0,
+				border-radius: 0,
+				font-size: 14px,
+				line-height: 1.6,
+				font-weight: 400,
+			),
+			small: (
+				padding: 0 6px,
+				border-radius: 4px,
+				font-size: 14px,
+				line-height: 1.6,
+				font-weight: 400,
+			),
+			medium: (
+				padding: 4px 8px,
+				border-radius: 4px,
+				font-size: 12px,
+				line-height: 1.87,
+				font-weight: 400,
+				letter-spacing: 0.02em,
+				text-transform: uppercase,
+			),
+			default: (
+				padding: 12px 24px,
+				border-radius: 4px,
+				font-size: 16px,
+				line-height: 1.6,
+				font-weight: 600,
+			),
+			default-small: (
+				padding: 8px 16px,
+				border-radius: 4px,
+				font-size: 14px,
+				line-height: 1.6,
+				font-weight: 400,
+			),
+		),
+	),
+	button-icon-offset: 12px,
+);
+
 .btn {
-	padding: 0;
-	border: 0;
-	appearance: none;
+	$this: &;
+	@extend %button-reset;
 	position: relative;
-	display: var(--button-display);
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	text-decoration: none;
-	padding: var(--button-padding-vertical, 0.6em) var(--button-padding-horizontal, 2.5em);
-	font-weight: bold;
 	text-align: center;
-	cursor: var(--button-cursor, pointer);
-	border-radius: var(--button-border-radius, 5rem);
-	opacity: var(--button-opacity);
+	cursor: pointer;
 	transition: {
-		property: background-color, color, border-color;
+		property: background-color, color;
 		timing-function: ease-in;
-		duration: 0.3s;
+		duration: 0.15s;
 	}
-	color: var(--button-scoped-color, var(--button-color));
-	background-color: var(--button-scoped-background-color, var(--button-background-color));
-	width: var(--button-width);
-	font-size: var(--button-font-size);
-	line-height: var(--button-line-height);
 
-	&:hover {
-		--button-scoped-color: var(--button-color-hover);
-		--button-scoped-background-color: var(--button-background-color-hover);
-	}
+	@include link(map-get-strict($btn, colors), primary);
 
 	&:disabled {
-		--button-scoped-background-color: var(--global-colors-light);
-		--button-cursor: not-allowed;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	&__content,
+	&__icon {
+		pointer-events: none; // used for close modal trigger to recognize the target element
+	}
+
+	&__size-width {
+		&--full-width {
+			display: flex;
+			width: 100%;
+		}
+	}
+
+	&__color {
+		@include link-modifiers($btn, colors);
+	}
+
+	&__wrap {
+		display: flex;
+	}
+
+	&__align {
+		@include flex-horizontal-align-modifiers;
+	}
+
+	&--has-icon {
+		#{$this}__icon {
+			color: inherit;
+		}
+	}
+
+	&--icon-position {
+		&-right {
+			flex-direction: row-reverse;
+
+			#{$this}__icon {
+				margin-left: map-get-strict($btn, button-icon-offset);
+			}
+		}
+
+		&-left {
+			#{$this}__icon {
+				margin-right: map-get-strict($btn, button-icon-offset);
+			}
+		}
+
+		&-center {
+			padding: 24px;
+		}
+	}
+
+	&__size {
+		@include responsive-modifiers($btn, sizes);
+	}
+
+	&.is-active {
+		background-color: global-settings(colors, blue-11);
 	}
 }
