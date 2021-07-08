@@ -2,7 +2,6 @@
 	"componentName": "hamburger",
 	"title": "Hamburger",
 	"componentClass": "hamburger",
-	"componentJsClass": "js-hamburger",
 	"example": {
 		"attributes": {
 			"hamburgerUse": true

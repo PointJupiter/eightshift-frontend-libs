@@ -1,28 +1,22 @@
 import React from 'react';
-import { __, sprintf } from '@wordpress/i18n';
-import _ from 'lodash';
+import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
+import { Fragment } from '@wordpress/element';
 import { PanelBody, RangeControl, Icon, SelectControl, Spinner } from '@wordpress/components';
 import { icons } from '@eightshift/frontend-libs/scripts/editor';
-import { checkAttr, getAttrKey } from '@eightshift/frontend-libs/scripts/helpers';
-import { CustomSelect } from '@eightshift/frontend-libs/scripts/components';
 import manifest from './../manifest.json';
+
+const { attributes: reset, options } = manifest;
 
 export const FeaturedCategoriesOptions = ({ attributes, setAttributes }) => {
 	const {
-		attributes: manifestAttributes,
-		options: manifestOptions
-	} = manifest;
-
-	const {
-		featuredCategoriesQuery,
-		featuredCategoriesQuery: {
+		query: queryProps,
+		query: {
 			taxonomy,
 			terms,
 		},
+		itemsPerLine,
 	} = attributes;
-
-	const featuredCategoriesItemsPerLine = checkAttr('featuredCategoriesItemsPerLine', attributes, manifest);
 
 	// Fetch all taxonomies.
 	// Filter allowed taxonomies defined in the block manifest.
@@ -55,7 +49,7 @@ export const FeaturedCategoriesOptions = ({ attributes, setAttributes }) => {
 
 		return [
 			{
-				label: __('No Filter used', 'eightshift-frontend-libs'),
+				label: __('All', 'eightshift-frontend-libs'),
 				value: '',
 			},
 			...termsList.map((item) => {
@@ -77,8 +71,8 @@ export const FeaturedCategoriesOptions = ({ attributes, setAttributes }) => {
 					options={taxonomyOptions}
 					onChange={(value) => {
 						setAttributes({
-							featuredCategoriesQuery: {
-								...featuredCategoriesQuery,
+							query: {
+								...queryProps,
 								taxonomy: value,
 								terms: [],
 							},
@@ -89,16 +83,15 @@ export const FeaturedCategoriesOptions = ({ attributes, setAttributes }) => {
 			}
 
 			{(taxonomyOptions[0] && taxonomy) ?
-				<CustomSelect
-					label={sprintf(__('Filter by %s', 'eightshift-frontend-libs'), _.startCase(_.toLower(taxonomy)))}
-					help={sprintf(__('If `No Filter` value is selected your %s posts will not be filtered.', 'eightshift-frontend-libs'), _.startCase(_.toLower(taxonomy)))}
-					options={termsOptions}
+				<SelectControl
+					label={__('Category Items', 'eightshift-frontend-libs')}
 					value={terms}
-					multiple={true}
+					multiple
+					options={termsOptions}
 					onChange={(value) => {
 						setAttributes({
-							featuredCategoriesQuery: {
-								...featuredCategoriesQuery,
+							query: {
+								...queryProps,
 								terms: value[0] ? value : [],
 							},
 						});
@@ -109,19 +102,19 @@ export const FeaturedCategoriesOptions = ({ attributes, setAttributes }) => {
 
 			<RangeControl
 				label={
-					<>
-						<Icon icon={icons.itemsPerRow} />
+					<Fragment>
+						<Icon icon={icons.totalItems} />
 						{__('Items per one row', 'eightshift-frontend-libs')}
-					</>
+					</Fragment>
 				}
 				help={__('Option to change the number of items showed in one row.', 'eightshift-frontend-libs')}
 				allowReset={true}
-				value={featuredCategoriesItemsPerLine}
-				onChange={(value) => setAttributes({ [getAttrKey('featuredCategoriesItemsPerLine', attributes, manifest)]: value })}
-				min={manifestOptions.featuredCategoriesItemsPerLine.min}
-				max={manifestOptions.featuredCategoriesItemsPerLine.max}
-				step={manifestOptions.featuredCategoriesItemsPerLine.step}
-				resetFallbackValue={manifestAttributes.featuredCategoriesItemsPerLine.default}
+				value={itemsPerLine}
+				onChange={(value) => setAttributes({ itemsPerLine: value })}
+				min={options.itemsPerLine.min}
+				max={options.itemsPerLine.max}
+				step={options.itemsPerLine.step}
+				resetFallbackValue={reset.itemsPerLine.default}
 			/>
 
 		</PanelBody>

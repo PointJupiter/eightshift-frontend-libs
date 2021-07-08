@@ -1,20 +1,18 @@
 import React from 'react';
 import classnames from 'classnames';
+import { Fragment } from '@wordpress/element';
 import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
 export const PageOverlayEditor = (attributes) => {
 	const {
-		componentClass: manifestComponentClass,
-	} = manifest;
-
-	const {
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
-	} = attributes;
 
-	const pageOverlayUse = checkAttr('pageOverlayUse', attributes, manifest);
+		pageOverlayUse = checkAttr('pageOverlayUse', attributes, manifest, componentName),
+	} = attributes;
 
 	const overlayClass = classnames([
 		componentClass,
@@ -22,10 +20,10 @@ export const PageOverlayEditor = (attributes) => {
 	]);
 
 	return (
-		<>
+		<Fragment>
 			{pageOverlayUse &&
 				<div className={overlayClass}></div>
 			}
-		</>
+		</Fragment>
 	);
 };

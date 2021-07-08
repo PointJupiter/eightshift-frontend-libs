@@ -1,28 +1,25 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
-import { outputCssVariables, getUnique, props } from '@eightshift/frontend-libs/scripts/editor';
 import { checkAttr, selector } from '@eightshift/frontend-libs/scripts/helpers';
 import { ImageEditor } from '../../image/components/image-editor';
 import { HeadingEditor } from '../../heading/components/heading-editor';
 import { ParagraphEditor } from '../../paragraph/components/paragraph-editor';
 import { ButtonEditor } from '../../button/components/button-editor';
 import manifest from './../manifest.json';
-import globalManifest from './../../../manifest.json';
 
 export const JumbotronEditor = (attributes) => {
-	const unique = useMemo(() => getUnique(), []);
-	const {
-		componentClass: manifestComponentClass,
-	} = manifest;
-
 	const {
 		setAttributes,
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
-	} = attributes;
 
-	const jumbotronUse = checkAttr('jumbotronUse', attributes, manifest);
+		jumbotronUse = checkAttr('jumbotronUse', attributes, manifest, componentName),
+
+		jumbotronContentPosition = checkAttr('jumbotronContentPosition', attributes, manifest, componentName),
+	} = attributes;
 
 	const jumbotronClass = classnames([
 		componentClass,
@@ -38,44 +35,42 @@ export const JumbotronEditor = (attributes) => {
 	]);
 
 	return (
-		<>
+		<Fragment>
 			{jumbotronUse &&
-				<>
-					{outputCssVariables(attributes, manifest, unique, globalManifest)}
+				<div className={jumbotronClass}>
 
-					<div className={jumbotronClass} data-id={unique}>
+					<ImageEditor
+						{...attributes}
+						setAttributes={setAttributes}
+						blockClass={componentClass}
+						imageUsePlaceholder={true}
+						imageBg={true}
+					/>
 
-						<ImageEditor
-							{...props(attributes, 'image')}
-							setAttributes={setAttributes}
-							blockClass={componentClass}
-						/>
+					<div className={contentClass} data-position={jumbotronContentPosition}>
+						<div className={contentWrapClass}>
+							<HeadingEditor
+								{...attributes}
+								setAttributes={setAttributes}
+								blockClass={componentClass}
+							/>
 
-						<div className={contentClass}>
-							<div className={contentWrapClass}>
-								<HeadingEditor
-									{...props(attributes, 'heading')}
-									setAttributes={setAttributes}
-									blockClass={componentClass}
-								/>
+							<ParagraphEditor
+								{...attributes}
+								setAttributes={setAttributes}
+								blockClass={componentClass}
+							/>
 
-								<ParagraphEditor
-									{...props(attributes, 'paragraph')}
-									setAttributes={setAttributes}
-									blockClass={componentClass}
-								/>
-
-								<ButtonEditor
-									{...props(attributes, 'button')}
-									setAttributes={setAttributes}
-									blockClass={componentClass}
-								/>
-							</div>
+							<ButtonEditor
+								{...attributes}
+								setAttributes={setAttributes}
+								blockClass={componentClass}
+							/>
 						</div>
-
 					</div>
-				</>
+
+				</div>
 			}
-		</>
+		</Fragment>
 	);
 };

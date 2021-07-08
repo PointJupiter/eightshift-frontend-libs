@@ -4,11 +4,6 @@ $block-columns: (
 		max: 100,
 		step: 10,
 	),
-	verticalSpacing: (
-		min: 0,
-		max: 100,
-		step: 10,
-	),
 );
 
 @mixin columns-parent {
@@ -37,15 +32,15 @@ $block-columns: (
 
 	&__vertical-spacing {
 		@include responsive-selectors {
-			$i: map-get-deep($block-columns, verticalSpacing, min);
-			@while $i <= map-get-deep($block-columns, verticalSpacing, max) {
+			$i: map-get-deep($block-columns, gutters, min);
+			@while $i <= map-get-deep($block-columns, gutters, max) {
 				&--#{$i} {
 					> #{$wrapper} .block-column { // stylelint-disable-line max-nesting-depth
 						margin-bottom: #{$i}px;
 					}
 				}
 
-				$i: $i + map-get-deep($block-columns, verticalSpacing, step);
+				$i: $i + map-get-deep($block-columns, gutters, step);
 			}
 		}
 	}

@@ -1,9 +1,7 @@
 import { assign } from 'lodash';
-import { createElement } from '@wordpress/element';
-import { addFilter } from '@wordpress/hooks';
 import classnames from 'classnames';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { responsiveSelectors, checkAttrResponsive } from '@eightshift/frontend-libs/scripts/helpers';
+import { responsiveSelectors, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './manifest.json';
 import globalManifest from '../../manifest.json';
 
@@ -11,12 +9,6 @@ const blockName = `${globalManifest.namespace}/${manifest.blockName}`;
 
 // Add options to the Gutenberg markup.
 const parentComponentBlock = createHigherOrderComponent((BlockListBlock) => {
-	const {
-		globalVariables: {
-			customBlocksName: globalManifestCustomBlocksName,
-		},
-	} = globalManifest;
-
 	return (innerProps) => {
 		const {
 			name,
@@ -30,21 +22,49 @@ const parentComponentBlock = createHigherOrderComponent((BlockListBlock) => {
 
 		// Move selectors to the parent div in DOM.
 		if (name === blockName) {
-			const columnWidth = checkAttrResponsive('columnWidth', attributes, manifest);
-			const columnOffset = checkAttrResponsive('columnOffset', attributes, manifest);
-			const columnHide = checkAttrResponsive('columnHide', attributes, manifest);
-			const columnOrder = checkAttrResponsive('columnOrder', attributes, manifest);
-			const columnAlign = checkAttrResponsive('columnAlign', attributes, manifest);
+			const width = {
+				large: checkAttr('widthLarge', attributes, manifest),
+				desktop: checkAttr('widthDesktop', attributes, manifest),
+				tablet: checkAttr('widthTablet', attributes, manifest),
+				mobile: checkAttr('widthMobile', attributes, manifest),
+			};
 
+			const offset = {
+				large: checkAttr('offsetLarge', attributes, manifest),
+				desktop: checkAttr('offsetDesktop', attributes, manifest),
+				tablet: checkAttr('offsetTablet', attributes, manifest),
+				mobile: checkAttr('offsetMobile', attributes, manifest),
+			};
+
+			const hide = {
+				large: checkAttr('hideLarge', attributes, manifest),
+				desktop: checkAttr('hideDesktop', attributes, manifest),
+				tablet: checkAttr('hideTablet', attributes, manifest),
+				mobile: checkAttr('hideMobile', attributes, manifest),
+			};
+
+			const order = {
+				large: checkAttr('orderLarge', attributes, manifest),
+				desktop: checkAttr('orderDesktop', attributes, manifest),
+				tablet: checkAttr('orderTablet', attributes, manifest),
+				mobile: checkAttr('orderMobile', attributes, manifest),
+			};
+
+			const align = {
+				large: checkAttr('alignLarge', attributes, manifest),
+				desktop: checkAttr('alignDesktop', attributes, manifest),
+				tablet: checkAttr('alignTablet', attributes, manifest),
+				mobile: checkAttr('alignMobile', attributes, manifest),
+			};
 
 			const componentClass = classnames([
 				blockClass,
-				globalManifestCustomBlocksName,
-				responsiveSelectors(columnWidth, 'width', blockClass),
-				responsiveSelectors(columnOffset, 'offset', blockClass),
-				responsiveSelectors(columnOrder, 'order', blockClass),
-				responsiveSelectors(columnAlign, 'align', blockClass),
-				responsiveSelectors(columnHide, 'hide-editor', blockClass, false),
+				globalManifest.globalVariables.customBlocksName,
+				responsiveSelectors(width, 'width', blockClass),
+				responsiveSelectors(offset, 'offset', blockClass),
+				responsiveSelectors(order, 'order', blockClass),
+				responsiveSelectors(align, 'align', blockClass),
+				responsiveSelectors(hide, 'hide-editor', blockClass),
 			]);
 
 			updatedProps = assign(
@@ -56,7 +76,7 @@ const parentComponentBlock = createHigherOrderComponent((BlockListBlock) => {
 			);
 		}
 
-		return createElement(
+		return wp.element.createElement(
 			BlockListBlock,
 			updatedProps
 		);
@@ -64,5 +84,5 @@ const parentComponentBlock = createHigherOrderComponent((BlockListBlock) => {
 }, 'parentComponentBlock');
 
 export const hooks = () => {
-	addFilter('editor.BlockListBlock', blockName, parentComponentBlock);
+	wp.hooks.addFilter('editor.BlockListBlock', blockName, parentComponentBlock);
 };

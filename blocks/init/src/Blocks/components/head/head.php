@@ -6,13 +6,9 @@
  * @package EightshiftBoilerplate
  */
 
-use EightshiftBoilerplateVendor\EightshiftLibs\Helpers\Components;
-
 $icon = $attributes['icon'] ?? '';
 $charset = $attributes['charset'] ?? \get_bloginfo('charset');
 $name = $attributes['name'] ?? \get_bloginfo('name');
-
-$globalManifest = Components::getManifest(dirname(__DIR__, 2));
 ?>
 
 <meta charset="<?php echo \esc_attr($charset); ?>" />
@@ -44,6 +40,3 @@ $globalManifest = Components::getManifest(dirname(__DIR__, 2));
 
 <!-- General -->
 <link rel="shortcut icon" href="<?php echo \esc_url($icon); ?>" />
-
-<?php
-echo Components::outputCssVariablesGlobal($globalManifest); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

@@ -8,14 +8,11 @@
 
 use EightshiftBoilerplateVendor\EightshiftLibs\Helpers\Components;
 
-$globalManifest = Components::getManifest(dirname(__DIR__, 2));
 $manifest = Components::getManifest(__DIR__);
 
 $componentClass = $attributes['componentClass'] ?? $manifest['componentClass'];
 $selectorClass = $attributes['selectorClass'] ?? $componentClass;
 $blockClass = $attributes['blockClass'] ?? '';
-
-$unique = Components::getUnique();
 
 $cardClass = Components::classnames([
 	$componentClass,
@@ -24,59 +21,45 @@ $cardClass = Components::classnames([
 
 ?>
 
-<div class="<?php echo \esc_attr($cardClass); ?>" data-id="<?php echo \esc_attr($unique); ?>">
+<div class="<?php echo \esc_attr($cardClass); ?>">
 	<?php
-	echo Components::outputCssVariables($attributes, $manifest, $unique, $globalManifest); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
-	echo Components::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		'image',
-		array_merge(
-			Components::props($attributes, 'image'),
-			[
-				'blockClass' => $componentClass,
-			]
-		)
-	),
-
-	Components::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		'heading',
-		array_merge(
-			Components::props($attributes, 'intro'),
-			[
-				'selectorClass' => 'intro',
-				'blockClass' => $componentClass
-			]
-		)
-	),
-
-	Components::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		'heading',
-		array_merge(
-			Components::props($attributes, 'heading'),
-			[
-				'blockClass' => $componentClass
-			]
-		)
-	),
-
-	Components::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		'paragraph',
-		array_merge(
-			Components::props($attributes, 'paragraph'),
-			[
-				'blockClass' => $componentClass
-			]
-		)
-	),
-
-	Components::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		'button',
-		array_merge(
-			Components::props($attributes, 'button'),
-			[
-				'blockClass' => $componentClass
-			]
-		)
-	);
+	echo \wp_kses_post(Components::render('image', array_merge(
+		$attributes,
+		[
+			'blockClass' => $componentClass
+		]
+	)));
+	echo \wp_kses_post(Components::render('heading', array_merge(
+		$attributes,
+		[
+			'componentName' => 'intro',
+			'headingUse' => $attributes['introUse'],
+			'headingContent' => $attributes['introContent'] ?? '',
+			'headingLevel' => $attributes['introLevel'],
+			'headingColor' => $attributes['introColor'],
+			'headingSize' => $attributes['introSize'],
+			'headingAlign' => $attributes['introAlign'],
+			'selectorClass' => 'intro',
+			'blockClass' => $componentClass
+		]
+	)));
+	echo \wp_kses_post(Components::render('heading', array_merge(
+		$attributes,
+		[
+			'blockClass' => $componentClass
+		]
+	)));
+	echo \wp_kses_post(Components::render('paragraph', array_merge(
+		$attributes,
+		[
+			'blockClass' => $componentClass
+		]
+	)));
+	echo \wp_kses_post(Components::render('button', array_merge(
+		$attributes,
+		[
+			'blockClass' => $componentClass
+		]
+	)));
 	?>
 </div>

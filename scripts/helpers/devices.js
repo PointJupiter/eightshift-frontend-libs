@@ -1,7 +1,7 @@
 /**
  * Device check helper
  *
- * Detect a certain device, so specific functionality can be implemented for it.
+ * Detect if a certain device is used to toggle some specific functionality for it
  */
 export const device = {
 	iPhone() {

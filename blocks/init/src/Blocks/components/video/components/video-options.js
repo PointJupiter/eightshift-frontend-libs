@@ -1,188 +1,99 @@
 import React from 'react';
-import _ from 'lodash';
+import { Fragment } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { SelectControl, TextControl, ToggleControl } from '@wordpress/components';
 import { MediaPlaceholder } from '@wordpress/block-editor';
-import { ToggleControl, Button, SelectControl, BaseControl } from '@wordpress/components';
-import { checkAttr, getAttrKey } from '@eightshift/frontend-libs/scripts/helpers';
-import manifest from '../manifest.json';
+import { checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
+import manifest from './../manifest.json';
+
+const { options, title } = manifest;
 
 export const VideoOptions = (attributes) => {
 	const {
-		title: manifestTitle,
-		options: manifestOptions,
-	} = manifest;
-
-	const {
 		setAttributes,
-		label = manifestTitle,
+		componentName = manifest.componentName,
+		label = title,
 		videoShowControls = true,
 
-		videoUse = checkAttr('videoUse', attributes, manifest),
+		videoUse = checkAttr('videoUse', attributes, manifest, componentName),
 
-		videoUrl = checkAttr('videoUrl', attributes, manifest),
-		videoPoster = checkAttr('videoPoster', attributes, manifest),
-		videoAccept = checkAttr('videoAccept', attributes, manifest),
-		videoAllowedTypes = checkAttr('videoAllowedTypes', attributes, manifest),
-		videoLoop = checkAttr('videoLoop', attributes, manifest),
-		videoAutoplay = checkAttr('videoAutoplay', attributes, manifest),
-		videoControls = checkAttr('videoControls', attributes, manifest),
-		videoMuted = checkAttr('videoMuted', attributes, manifest),
-		videoPreload = checkAttr('videoPreload', attributes, manifest),
+		videoUrl = checkAttr('videoUrl', attributes, manifest, componentName),
+		videoType = checkAttr('videoType', attributes, manifest, componentName),
+		videoAspectRatio = checkAttr('videoAspectRatio', attributes, manifest, componentName),
+		videoUsePlaceholder = checkAttr('videoUsePlaceholder', attributes, manifest, componentName),
+		videoAccept = checkAttr('videoAccept', attributes, manifest, componentName),
+		videoAllowedTypes = checkAttr('videoAllowedTypes', attributes, manifest, componentName),
 
-		showVideoUse = true,
 		showVideoUrl = true,
-		showVideoPoster = true,
-		showVideoLoop = true,
-		showVideoAdvanced = true,
-		showVideoAutoplay = true,
-		showVideoControls = true,
-		showVideoMuted = true,
-		showVideoPreload = true,
+		showVideoAspectRatio = true,
+		showVideoType = true,
 	} = attributes;
-
-	const options = {...manifestOptions, ...attributes.options};
 
 	if (!videoShowControls) {
 		return null;
 	}
 
-	const [showAdvanced, setShowAdvanced] = useState(false);
-
 	return (
-		<>
+		<Fragment>
+
 			{label &&
 				<h3 className={'options-label'}>
 					{label}
 				</h3>
 			}
 
-			{showVideoUse &&
-				<ToggleControl
-					label={sprintf(__('Use %s', 'eightshift-frontend-libs'), label)}
-					checked={videoUse}
-					onChange={(value) => setAttributes({ [getAttrKey('videoUse', attributes, manifest)]: value })}
-				/>
-			}
+			<ToggleControl
+				label={sprintf(__('Use %s', 'eightshift-frontend-libs'), label)}
+				checked={videoUse}
+				onChange={(value) => setAttributes({ [`${componentName}Use`]: value })}
+			/>
 
 			{videoUse &&
-				<>
+				<Fragment>
 					{showVideoUrl &&
-						<BaseControl
-							label={__('Video', 'eightshift-frontend-libs')}
-						>
-							{!_.isEmpty(videoUrl) ?
-								<Button
-									isSecondary
-									isSmall
-									className={'custom-full-width-btn'}
-									onClick={() => setAttributes({ [getAttrKey('videoUrl', attributes, manifest)]: [] })}
-								>
-									{__('Remove video', 'eightshift-frontend-libs')}
-								</Button> :
-								<MediaPlaceholder
-									icon="format-video"
-									onSelect={(value) => setAttributes({
-											[getAttrKey('videoUrl', attributes, manifest)]: value.map((item) => {
-												return {
-													url: item.url,
-													mime: typeof(item.mime) === 'undefined' ? item.mime_type : item.mime,
-												}
-											})
-										})
-									}
-									accept={videoAccept}
-									multiple={true}
-									allowedTypes={videoAllowedTypes}
+						<Fragment>
+							{(videoUsePlaceholder && videoUrl === '') ?
+								<Fragment>
+									<MediaPlaceholder
+										icon="format-image"
+										onSelect={(value) => {
+											setAttributes({ [`${componentName}Url`]: value.url });
+										}}
+										accept={videoAccept}
+										allowedTypes={videoAllowedTypes}
+									/>
+									<br />
+								</Fragment> :
+								<TextControl
+									label={__('ID', 'eightshift-frontend-libs')}
+									value={videoUrl}
+									onChange={(value) => setAttributes({ [`${componentName}Url`]: value })}
+									help={__('Use only video ID not the full link. Example video link: https://music.youtube.com/watch?v=PsO6ZnUZI0g, ID is PsO6ZnUZI0g', 'eightshift-frontend-libs')}
 								/>
 							}
-						</BaseControl>
+						</Fragment>
 					}
 
-					{showVideoPoster &&
-						<BaseControl
-							label={__('Video Poster', 'eightshift-frontend-libs')}
-						>
-							{!_.isEmpty(videoPoster) ?
-								<>
-									<img src={videoPoster} alt='' />
-									<Button
-										isSecondary
-										isSmall
-										className={'custom-full-width-btn'}
-										onClick={() => setAttributes({ [getAttrKey('videoPoster', attributes, manifest)]: {} })}
-									>
-										{__('Remove video poster', 'eightshift-frontend-libs')}
-									</Button>
-								</> :
-								<MediaPlaceholder
-									icon="format-video"
-									onSelect={(value) => setAttributes({[getAttrKey('videoPoster', attributes, manifest)]: value.url})}
-									accept={'image/*'}
-									allowedTypes={["image"]}
-								/>
-							}
-						</BaseControl>
-					}
-
-					<br />
-
-					{showVideoAdvanced &&
-						<ToggleControl
-							label={__('Show advanced options', 'eightshift-frontend-libs')}
-							checked={showAdvanced}
-							onChange={() => setShowAdvanced(!showAdvanced)}
+					{showVideoType &&
+						<SelectControl
+							label={__('Type', 'eightshift-frontend-libs')}
+							value={videoType}
+							options={options.types}
+							onChange={(value) => setAttributes({ [`${componentName}Type`]: value })}
+							help={__('If you want to use local video, you must remove the URL', 'eightshift-frontend-libs')}
 						/>
 					}
 
-					{showAdvanced &&
-						<>
-							{showVideoLoop &&
-								<ToggleControl
-									label={__('Play in loop', 'eightshift-frontend-libs')}
-									checked={videoLoop}
-									onChange={(value) => setAttributes({ [getAttrKey('videoLoop', attributes, manifest)]: value })}
-								/>
-							}
-
-							{showVideoAutoplay &&
-								<ToggleControl
-									label={__('Autoplay', 'eightshift-frontend-libs')}
-									checked={videoAutoplay}
-									onChange={(value) => setAttributes({ [getAttrKey('videoAutoplay', attributes, manifest)]: value })}
-								/>
-							}
-
-							{showVideoControls &&
-								<ToggleControl
-									label={__('Show controls', 'eightshift-frontend-libs')}
-									checked={videoControls}
-									onChange={(value) => setAttributes({ [getAttrKey('videoControls', attributes, manifest)]: value })}
-								/>
-							}
-
-							{showVideoMuted &&
-								<ToggleControl
-									label={__('Play muted', 'eightshift-frontend-libs')}
-									checked={videoMuted}
-									onChange={(value) => setAttributes({ [getAttrKey('videoMuted', attributes, manifest)]: value })}
-								/>
-							}
-
-							{showVideoPreload &&
-								<SelectControl
-									label={__('Preload type', 'eightshift-frontend-libs')}
-									value={videoPreload}
-									options={options.videoPreload}
-									onChange={(value) => setAttributes({ [getAttrKey('videoPreload', attributes, manifest)]: value })}
-								/>
-							}
-						</>
+					{showVideoAspectRatio &&
+						<SelectControl
+							label={__('Aspect Ratio', 'eightshift-frontend-libs')}
+							value={videoAspectRatio}
+							options={options.aspectRatioSizes}
+							onChange={(value) => setAttributes({ [`${componentName}AspectRatio`]: value })}
+						/>
 					}
-
-				</>
+				</Fragment>
 			}
-
-		</>
+		</Fragment>
 	);
 };

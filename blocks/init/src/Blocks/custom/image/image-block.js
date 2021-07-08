@@ -1,4 +1,5 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import { BlockControls, InspectorControls } from '@wordpress/block-editor';
 import { ImageEditor } from './components/image-editor';
 import { ImageOptions } from './components/image-options';
@@ -6,7 +7,7 @@ import { ImageToolbar } from './components/image-toolbar';
 
 export const Image = (props) => {
 	return (
-		<>
+		<Fragment>
 			<InspectorControls>
 				<ImageOptions {...props} />
 			</InspectorControls>
@@ -14,6 +15,6 @@ export const Image = (props) => {
 				<ImageToolbar {...props} />
 			</BlockControls>
 			<ImageEditor {...props} />
-		</>
+		</Fragment>
 	);
 };

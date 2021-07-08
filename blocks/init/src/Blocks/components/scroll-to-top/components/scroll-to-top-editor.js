@@ -1,21 +1,21 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
 export const ScrollToTopEditor = (attributes) => {
 	const {
-		componentClass: manifestComponentClass,
-	} = manifest;
-
-	const {
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
-	} = attributes;
 
-	const scrollToTopUse = checkAttr('scrollToTopUse', attributes, manifest);
-	const scrollToTopContent = checkAttr('scrollToTopContent', attributes, manifest);
+		scrollToTopUse = checkAttr('scrollToTopUse', attributes, manifest, componentName),
+
+		scrollToTopContent = checkAttr('scrollToTopContent', attributes, manifest, componentName),
+
+	} = attributes;
 
 	const scrollClass = classnames(
 		componentClass,
@@ -23,12 +23,12 @@ export const ScrollToTopEditor = (attributes) => {
 	);
 
 	return (
-		<>
+		<Fragment>
 			{scrollToTopUse &&
 				<button className={scrollClass}>
 					{scrollToTopContent}
 				</button>
 			}
-		</>
+		</Fragment>
 	);
 };

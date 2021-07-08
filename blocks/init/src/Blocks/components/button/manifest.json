@@ -11,7 +11,6 @@
 			"buttonColor": "primary",
 			"buttonWidth": "default",
 			"buttonAlign": "left",
-			"buttonJsClass": "js-click-me",
 			"buttonIsAnchor": false,
 			"buttonUse": true
 		}
@@ -57,36 +56,13 @@
 		"buttonAriaLabel": {
 			"type": "string"
 		},
-		"buttonJsClass": {
-			"type": "string"
-		},
 		"buttonUse": {
 			"type": "boolean",
 			"default": true
-		},
-		"buttonIconPosition": {
-			"type": "string",
-			"default": "left"
-		},
-		"iconUse": {
-			"type": "boolean",
-			"default": false
 		}
 	},
 	"options": {
 		"sizes": [
-			{
-				"label": "Flat",
-				"value": "flat"
-			},
-			{
-				"label": "Small",
-				"value": "small"
-			},
-			{
-				"label": "Medium",
-				"value": "medium"
-			},
 			{
 				"label": "Default",
 				"value": "default"
@@ -102,22 +78,8 @@
 				"value": "default"
 			},
 			{
-				"label": "Full width",
-				"value": "full-width"
-			}
-		],
-		"iconPositions": [
-			{
-				"label": "Left",
-				"value": "left"
-			},
-			{
-				"label": "Center",
-				"value": "center"
-			},
-			{
-				"label": "Right",
-				"value": "right"
+				"label": "Block",
+				"value": "block"
 			}
 		],
 		"aligns": [
@@ -127,7 +89,7 @@
 		],
 		"colors": [
 			"primary",
-			"blue-10"
+			"black"
 		]
 	}
 }

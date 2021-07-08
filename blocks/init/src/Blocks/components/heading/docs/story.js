@@ -31,7 +31,7 @@ export const toolbar = () => (
 
 export const size = () => (
 	<Fragment>
-		{manifest.options.headingSize.map((values, index) => (
+		{manifest.options.sizes.map((values, index) => (
 			<Fragment key={index}>
 				<HeadingEditor
 					{...props}
@@ -59,9 +59,24 @@ export const level = () => (
 	</Fragment>
 );
 
+export const align = () => (
+	<Fragment>
+		{manifest.options.aligns.map((values, index) => (
+			<Fragment key={index}>
+				<HeadingEditor
+					{...props}
+					headingContent={values}
+					headingAlign={values}
+				/>
+				<br />
+			</Fragment>
+		))}
+	</Fragment>
+);
+
 export const color = () => (
 	<Fragment>
-		{manifest.options.headingColor.map((values, index) => (
+		{manifest.options.colors.map((values, index) => (
 			<Fragment key={index}>
 				<HeadingEditor
 					{...props}

@@ -4,15 +4,24 @@ import { Fragment } from '@wordpress/element';
 import { PanelBody, Icon, RangeControl } from '@wordpress/components';
 import { Responsive, HelpModal } from '@eightshift/frontend-libs/scripts/components';
 import { icons, ucfirst } from '@eightshift/frontend-libs/scripts/editor';
-import { checkAttrResponsive } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
+const { attributes: reset, options } = manifest;
+
 export const ColumnsOptions = ({ attributes, setAttributes }) => {
-	const {
-		blockName: manifestBlockName,
-		attributes: manifestAttributes,
-		options: manifestOptions,
-	} = manifest;
+	const gutter = [
+		attributes.gutterLarge,
+		attributes.gutterDesktop,
+		attributes.gutterTablet,
+		attributes.gutterMobile,
+	];
+
+	const verticalSpacing = [
+		attributes.verticalSpacingLarge,
+		attributes.verticalSpacingDesktop,
+		attributes.verticalSpacingTablet,
+		attributes.verticalSpacingMobile,
+	];
 
 	return (
 		<PanelBody title={__('Columns Details', 'eightshift-frontend-libs')}>
@@ -27,29 +36,28 @@ export const ColumnsOptions = ({ attributes, setAttributes }) => {
 
 			<Responsive
 				label={
-					<>
+					<Fragment>
 						<Icon icon={icons.gutter} />
 						{__('Gutter', 'eightshift-frontend-libs')}
-					</>
+					</Fragment>
 				}
 			>
-				{Object.keys(checkAttrResponsive('columnsGutter', attributes, manifest)).map(function(keyName) {
+				{gutter.map((item, index) => {
 
-					const point = ucfirst(keyName);
-					const attrOption = `${manifestBlockName}Gutter`;
-					const attr = `${attrOption}${point}`;
+					const point = ucfirst(options.breakpoints[index]);
+					const attr = `gutter${point}`;
 
 					return (
-						<Fragment key={keyName}>
+						<Fragment key={index}>
 							<RangeControl
 								label={point}
 								allowReset={true}
 								value={attributes[attr]}
 								onChange={(value) => setAttributes({ [attr]: value })}
-								min={manifestOptions[attrOption].min}
-								max={manifestOptions[attrOption].max}
-								step={manifestOptions[attrOption].step}
-								resetFallbackValue={manifestAttributes[attr].default}
+								min={options.gutters.min}
+								max={options.gutters.max}
+								step={options.gutters.step}
+								resetFallbackValue={reset[attr].default}
 							/>
 						</Fragment>
 					);
@@ -58,35 +66,33 @@ export const ColumnsOptions = ({ attributes, setAttributes }) => {
 
 			<Responsive
 				label={
-					<>
+					<Fragment>
 						<Icon icon={icons.verticalSpacing} />
 						{__('Vertical Spacing', 'eightshift-frontend-libs')}
-					</>
+					</Fragment>
 				}
 			>
-				{Object.keys(checkAttrResponsive('columnsVerticalSpacing', attributes, manifest)).map(function(keyName) {
+				{verticalSpacing.map((item, index) => {
 
-					const point = ucfirst(keyName);
-					const attrOption = `${manifestBlockName}VerticalSpacing`;
-					const attr = `${attrOption}${point}`;
+					const point = ucfirst(options.breakpoints[index]);
+					const attr = `verticalSpacing${point}`;
 
 					return (
-						<Fragment key={keyName}>
+						<Fragment key={index}>
 							<RangeControl
 								label={point}
 								allowReset={true}
 								value={attributes[attr]}
 								onChange={(value) => setAttributes({ [attr]: value })}
-								min={manifestOptions[attrOption].min}
-								max={manifestOptions[attrOption].max}
-								step={manifestOptions[attrOption].step}
-								resetFallbackValue={manifestAttributes[attr].default}
+								min={options.gutters.min}
+								max={options.gutters.max}
+								step={options.gutters.step}
+								resetFallbackValue={reset[attr].default}
 							/>
 						</Fragment>
 					);
 				})}
 			</Responsive>
-
 		</PanelBody>
 	);
 };

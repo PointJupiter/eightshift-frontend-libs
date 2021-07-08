@@ -4,6 +4,7 @@ import readme from './readme.mdx';
 import manifest from './../manifest.json';
 import { ParagraphEditor } from '../components/paragraph-editor';
 import { ParagraphOptions } from '../components/paragraph-options';
+import { ParagraphToolbar } from '../components/paragraph-toolbar';
 
 export default {
 	title: `Components/${manifest.title}`,
@@ -24,9 +25,13 @@ export const options = () => (
 	<ParagraphOptions {...props} />
 );
 
+export const toolbar = () => (
+	<ParagraphToolbar {...props} />
+);
+
 export const size = () => (
 	<Fragment>
-		{manifest.options.paragraphSize.map((values, index) => (
+		{manifest.options.sizes.map((values, index) => (
 			<Fragment key={index}>
 				<ParagraphEditor
 					{...props}
@@ -39,27 +44,28 @@ export const size = () => (
 	</Fragment>
 );
 
-export const color = () => (
+export const align = () => (
 	<Fragment>
-		{manifest.options.paragraphColor.map((values, index) => (
+		{manifest.options.aligns.map((values, index) => (
 			<Fragment key={index}>
 				<ParagraphEditor
 					{...props}
 					paragraphContent={values}
-					paragraphColor={values}
+					paragraphAlign={values}
 				/>
 				<br />
 			</Fragment>
 		))}
 	</Fragment>
 );
-export const colorWithLink = () => (
+
+export const color = () => (
 	<Fragment>
-		{manifest.options.paragraphColor.map((values, index) => (
+		{manifest.options.colors.map((values, index) => (
 			<Fragment key={index}>
 				<ParagraphEditor
 					{...props}
-					paragraphContent={`${values} - Lorem ipsum dolor sit amet, <a href="#">consectetur</a> adipiscing elit.`}
+					paragraphContent={values}
 					paragraphColor={values}
 				/>
 				<br />

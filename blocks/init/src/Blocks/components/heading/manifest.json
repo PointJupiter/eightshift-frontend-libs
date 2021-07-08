@@ -8,6 +8,7 @@
 			"headingLevel": 2,
 			"headingSize": "default",
 			"headingColor": "black",
+			"headingAlign": "left",
 			"headingUse": true
 		}
 	},
@@ -28,64 +29,34 @@
 			"type": "string",
 			"default": "black"
 		},
+		"headingAlign": {
+			"type": "string",
+			"default": "left"
+		},
 		"headingUse": {
 			"type": "boolean",
 			"default": true
 		}
 	},
 	"options": {
-		"headingSize": [
+		"sizes": [
 			{
-				"label": "Default (1.5em)",
+				"label": "Default (30px)",
 				"value": "default"
 			},
 			{
-				"label": "Big (2.5em)",
+				"label": "Big (50px)",
 				"value": "big"
 			}
 		],
-		"headingColor": [
+		"aligns": [
+			"left",
+			"center",
+			"right"
+		],
+		"colors": [
 			"primary",
 			"black"
-		]
-	},
-	"variables": {
-		"headingSize": {
-			"default": [
-				{
-					"variable": {
-						"heading-font-size": "1em",
-						"heading-line-height": "1"
-					}
-				},
-				{
-					"breakpoint": "tablet",
-					"variable": {
-						"heading-font-size": "1.5em"
-					}
-				}
-			],
-			"big": [
-				{
-					"variable": {
-						"heading-font-size": "1.5em",
-						"heading-line-height": "1"
-					}
-				},
-				{
-					"breakpoint": "tablet",
-					"variable": {
-						"heading-font-size": "2.5em"
-					}
-				}
-			]
-		},
-		"headingColor": [
-			{
-				"variable": {
-					"heading-color": "var(--global-colors-%value%)"
-				}
-			}
 		]
 	}
 }

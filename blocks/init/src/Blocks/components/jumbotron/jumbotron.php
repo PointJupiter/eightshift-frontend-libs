@@ -8,10 +8,10 @@
 
 use EightshiftBoilerplateVendor\EightshiftLibs\Helpers\Components;
 
-$globalManifest = Components::getManifest(dirname(__DIR__, 2));
 $manifest = Components::getManifest(__DIR__);
+$componentName = $attributes['componentName'] ?? $manifest['componentName'];
 
-$jumbotronUse = Components::checkAttr('jumbotronUse', $attributes, $manifest);
+$jumbotronUse = Components::checkAttr('jumbotronUse', $attributes, $manifest, $componentName);
 if (!$jumbotronUse) {
 	return;
 }
@@ -20,64 +20,58 @@ $componentClass = $attributes['componentClass'] ?? $manifest['componentClass'];
 $selectorClass = $attributes['selectorClass'] ?? $componentClass;
 $blockClass = $attributes['blockClass'] ?? '';
 
-$unique = Components::getUnique();
-echo Components::outputCssVariables($attributes, $manifest, $unique, $globalManifest); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+$jumbotronContentPosition = Components::checkAttr('jumbotronContentPosition', $attributes, $manifest, $componentName);
 
 $jumbotronClass = Components::classnames([
 	$componentClass,
 	Components::selector($blockClass, $blockClass, $selectorClass),
 ]);
 
+$contentClass = Components::classnames([
+	Components::selector($componentClass, $componentClass, 'content'),
+]);
+
+$contentWrapClass = Components::classnames([
+	Components::selector($componentClass, $componentClass, 'content-wrap'),
+]);
+
 ?>
 
-<div class="<?php echo \esc_attr($jumbotronClass); ?>" data-id="<?php echo esc_attr($unique); ?>">
+<div class="<?php echo \esc_attr($jumbotronClass); ?>">
 	<?php
-	echo Components::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		'image',
-		array_merge(
-			Components::props($attributes, 'image'),
-			[
-				'blockClass' => $componentClass,
-				'imageUsePlaceholder' => true,
-				'imageBg' => true,
-			]
-		)
-	);
+	echo \wp_kses_post(Components::render('image', array_merge(
+		$attributes,
+		[
+			'blockClass' => $componentClass,
+			'imageUsePlaceholder' => true,
+			'imageBg' => true,
+		]
+	)));
 	?>
 
-	<div class="<?php echo \esc_attr("{$componentClass}__content"); ?>">
-		<div class="<?php echo \esc_attr("{$componentClass}__content-wrap"); ?>">
+	<div class="<?php echo \esc_attr($contentClass); ?>" data-position="<?php echo \esc_attr($jumbotronContentPosition); ?>">
+		<div class="<?php echo \esc_attr($contentWrapClass); ?>">
 			<?php
-			echo Components::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				'heading',
-				array_merge(
-					Components::props($attributes, 'heading'),
-					[
-						'blockClass' => $componentClass
-					]
-				)
-			),
-
-			Components::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				'paragraph',
-				array_merge(
-					Components::props($attributes, 'paragraph'),
-					[
-						'blockClass' => $componentClass
-					]
-				)
-			),
-
-			Components::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				'button',
-				array_merge(
-					Components::props($attributes, 'button'),
-					[
-						'blockClass' => $componentClass
-					]
-				)
-			);
+			echo \wp_kses_post(Components::render('heading', array_merge(
+				$attributes,
+				[
+					'blockClass' => $componentClass
+				]
+			)));
+			echo \wp_kses_post(Components::render('paragraph', array_merge(
+				$attributes,
+				[
+					'blockClass' => $componentClass
+				]
+			)));
+			echo \wp_kses_post(Components::render('button', array_merge(
+				$attributes,
+				[
+					'blockClass' => $componentClass
+				]
+			)));
 			?>
 		</div>
 	</div>
+
 </div>

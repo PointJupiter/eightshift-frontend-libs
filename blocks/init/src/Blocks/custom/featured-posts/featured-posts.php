@@ -10,62 +10,33 @@ use EightshiftBoilerplateVendor\EightshiftLibs\Helpers\Components;
 
 $manifest = Components::getManifest(__DIR__);
 
-$blockClass = $attributes['blockClass'] ?? '';
-
-$featuredPostsQuery = Components::checkAttr('featuredPostsQuery', $attributes, $manifest);
-$featuredPostsItemsPerLine = Components::checkAttr('featuredPostsItemsPerLine', $attributes, $manifest);
-$featuredPostsShowItems = Components::checkAttr('featuredPostsShowItems', $attributes, $manifest);
-$featuredPostsExcludeCurrentPost = Components::checkAttr('featuredPostsExcludeCurrentPost', $attributes, $manifest);
-$featuredPostsServerSideRender = Components::checkAttr('featuredPostsServerSideRender', $attributes, $manifest);
+$blockClass = Components::checkAttr('blockClass', $attributes, $manifest);
+$query = Components::checkAttr('query', $attributes, $manifest);
+$excludeCurrentPost = Components::checkAttr('excludeCurrentPost', $attributes, $manifest);
+$itemsPerLine = Components::checkAttr('itemsPerLine', $attributes, $manifest);
+$showItems = Components::checkAttr('showItems', $attributes, $manifest);
+$serverSideRender = Components::checkAttr('serverSideRender', $attributes, $manifest);
 
 global $post;
 
 ?>
 
-<div
-	class="<?php echo esc_attr($blockClass); ?>"
-	data-items-per-line=<?php echo \esc_attr($featuredPostsItemsPerLine); ?>
->
+<div class="<?php echo esc_attr($blockClass); ?>" data-items-per-line=<?php echo \esc_attr($itemsPerLine); ?>>
 	<?php
-		$postType = $featuredPostsQuery['postType'] ?? '';
-		$taxonomy = $featuredPostsQuery['taxonomy'] ?? '';
-		$terms = $featuredPostsQuery['terms'] ?? [];
-		$posts = $featuredPostsQuery['posts'] ?? [];
+		$postType = $query['postType'];
+		$posts = $query['posts'];
 
 		$args = [
 			'post_type' => $postType,
-			'posts_per_page' => $featuredPostsShowItems,
+			'posts_per_page' => $showItems,
 		];
 
-		if ($taxonomy) {
-			$args['tax_query'][0] = [
-				'taxonomy' => $taxonomy,
-				'field' => 'id',
-			];
-			if ($terms) {
-				$args['tax_query'][0]['terms'] = array_map(
-					function ($item) {
-						return $item['value'];
-					},
-					$terms
-				);
-			} else {
-				$args['tax_query'][0]['operator'] = 'NOT IN'; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-			}
-		};
-
-		if ($featuredPostsExcludeCurrentPost) {
-			$args['post__not_in'] = [$post->ID];
+		if ($excludeCurrentPost) {
+			$args['post__not_in'] = $posts->ID;
 		}
 
 		if ($posts) {
-			$args['post__in'] = array_map(
-				function ($item) {
-					return $item['value'];
-				},
-				$posts
-			);
-			$args['orderby'] = 'post__in';
+			$args['post__in'] = $posts;
 		}
 
 		$theQuery = new \WP_Query($args);
@@ -88,7 +59,7 @@ global $post;
 					'buttonUrl' => \get_the_permalink($postId),
 				];
 
-				if ($featuredPostsServerSideRender) {
+				if ($serverSideRender) {
 					$cardProps['headingTag'] = 'div';
 					$cardProps['paragraphTag'] = 'div';
 				}
@@ -96,9 +67,11 @@ global $post;
 
 				<div class="<?php echo esc_attr("{$blockClass}__item"); ?>">
 					<?php
-					echo Components::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-						'card',
-						$cardProps
+					echo wp_kses_post(
+						Components::render(
+							'card',
+							$cardProps
+						)
 					);
 					?>
 				</div>

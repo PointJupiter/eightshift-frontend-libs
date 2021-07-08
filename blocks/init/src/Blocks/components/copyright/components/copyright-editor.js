@@ -1,23 +1,22 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
 export const CopyrightEditor = (attributes) => {
 	const {
-		componentClass: manifestComponentClass,
-	} = manifest;
-
-	const {
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
-	} = attributes;
 
-	const copyrightUse = checkAttr('copyrightUse', attributes, manifest);
-	const copyrightBy = checkAttr('copyrightBy', attributes, manifest);
-	const copyrightYear = checkAttr('copyrightYear', attributes, manifest);
-	const copyrightContent = checkAttr('copyrightContent', attributes, manifest);
+		copyrightUse = checkAttr('copyrightUse', attributes, manifest, componentName),
+
+		copyrightBy = checkAttr('copyrightBy', attributes, manifest, componentName),
+		copyrightYear = checkAttr('copyrightYear', attributes, manifest, componentName),
+		copyrightContent = checkAttr('copyrightContent', attributes, manifest, componentName),
+	} = attributes;
 
 	const copyrightClass = classnames([
 		componentClass,
@@ -25,12 +24,12 @@ export const CopyrightEditor = (attributes) => {
 	]);
 
 	return (
-		<>
+		<Fragment>
 			{copyrightUse &&
 				<div className={copyrightClass}>
 					{'&copy'} {copyrightBy} {copyrightYear} - {copyrightContent}
 				</div>
 			}
-		</>
+		</Fragment>
 	);
 };

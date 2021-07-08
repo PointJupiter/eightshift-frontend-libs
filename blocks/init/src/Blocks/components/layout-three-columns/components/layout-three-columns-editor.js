@@ -1,23 +1,22 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from '../manifest.json';
 
 export const LayoutThreeColumnsEditor = (attributes) => {
 	const {
-		componentClass: manifestComponentClass,
-	} = manifest;
-
-	const {
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
-	} = attributes;
 
-	const layoutUse = checkAttr('layoutUse', attributes, manifest);
-	const layoutLeft = checkAttr('layoutLeft', attributes, manifest);
-	const layoutCenter = checkAttr('layoutCenter', attributes, manifest);
-	const layoutRight = checkAttr('layoutRight', attributes, manifest);
+		layoutUse = checkAttr('layoutUse', attributes, manifest, componentName),
+
+		layoutLeft = checkAttr('layoutLeft', attributes, manifest, componentName),
+		layoutCenter = checkAttr('layoutCenter', attributes, manifest, componentName),
+		layoutRight = checkAttr('layoutRight', attributes, manifest, componentName),
+	} = attributes;
 
 	const layoutClass = classnames([
 		componentClass,
@@ -51,7 +50,7 @@ export const LayoutThreeColumnsEditor = (attributes) => {
 	]);
 
 	return (
-		<>
+		<Fragment>
 			{layoutUse &&
 				<div className={layoutClass}>
 					<div className={wrapClass}>
@@ -75,6 +74,6 @@ export const LayoutThreeColumnsEditor = (attributes) => {
 					</div>
 				</div>
 			}
-		</>
+		</Fragment>
 	);
 };

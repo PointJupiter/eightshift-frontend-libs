@@ -1,19 +1,17 @@
 import React from 'react';
-import { ServerSideRender } from '@eightshift/frontend-libs/scripts/components';
+import ServerSideRender from '@wordpress/server-side-render';
+import globalSettings from './../../../manifest.json';
+import block from './../manifest.json';
 
 export const FeaturedPostsEditor = ({ attributes }) => {
-	const {
-		blockFullName,
-	} = attributes;
-
 	return (
 		<ServerSideRender
-			block={blockFullName}
+			block={`${globalSettings.namespace}/${block.blockName}`}
 			attributes={
 				{
 					...attributes,
 					wrapperUse: false,
-					featuredPostsServerSideRender: true,
+					serverSideRender: true,
 				}
 			}
 		/>

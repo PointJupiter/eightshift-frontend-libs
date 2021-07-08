@@ -12,22 +12,51 @@ $manifest = Components::getManifest(__DIR__);
 
 $blockClass = $attributes['blockClass'] ?? '';
 
-$columnWidth = Components::checkAttrResponsive('columnWidth', $attributes, $manifest);
-$columnOffset = Components::checkAttrResponsive('columnOffset', $attributes, $manifest);
-$columnHide = Components::checkAttrResponsive('columnHide', $attributes, $manifest);
-$columnOrder = Components::checkAttrResponsive('columnOrder', $attributes, $manifest);
-$columnAlign = Components::checkAttrResponsive('columnAlign', $attributes, $manifest);
+$width = [
+	'large' => Components::checkAttr('widthLarge', $attributes, $manifest),
+	'desktop' => Components::checkAttr('widthDesktop', $attributes, $manifest),
+	'tablet' => Components::checkAttr('widthTablet', $attributes, $manifest),
+	'mobile' => Components::checkAttr('widthMobile', $attributes, $manifest),
+];
 
-$columnClass = Components::classnames([
+$offset = [
+	'large' => Components::checkAttr('offsetLarge', $attributes, $manifest),
+	'desktop' => Components::checkAttr('offsetDesktop', $attributes, $manifest),
+	'tablet' => Components::checkAttr('offsetTablet', $attributes, $manifest),
+	'mobile' => Components::checkAttr('offsetMobile', $attributes, $manifest),
+];
+
+$hide = [
+	'large' => Components::checkAttr('hideLarge', $attributes, $manifest),
+	'desktop' => Components::checkAttr('hideDesktop', $attributes, $manifest),
+	'tablet' => Components::checkAttr('hideTablet', $attributes, $manifest),
+	'mobile' => Components::checkAttr('hideMobile', $attributes, $manifest),
+];
+
+$order = [
+	'large' => Components::checkAttr('orderLarge', $attributes, $manifest),
+	'desktop' => Components::checkAttr('orderDesktop', $attributes, $manifest),
+	'tablet' => Components::checkAttr('orderTablet', $attributes, $manifest),
+	'mobile' => Components::checkAttr('orderMobile', $attributes, $manifest),
+];
+
+$align = [
+	'large' => Components::checkAttr('alignLarge', $attributes, $manifest),
+	'desktop' => Components::checkAttr('alignDesktop', $attributes, $manifest),
+	'tablet' => Components::checkAttr('alignTablet', $attributes, $manifest),
+	'mobile' => Components::checkAttr('alignMobile', $attributes, $manifest),
+];
+
+$componentClass = Components::classnames([
 	$blockClass,
-	Components::responsiveSelectors($columnWidth, 'width', $blockClass),
-	Components::responsiveSelectors($columnOffset, 'offset', $blockClass),
-	Components::responsiveSelectors($columnOrder, 'order', $blockClass),
-	Components::responsiveSelectors($columnAlign, 'align', $blockClass),
-	Components::responsiveSelectors($columnHide, 'hide', $blockClass, false),
+	Components::responsiveSelectors($width, 'width', $blockClass),
+	Components::responsiveSelectors($offset, 'offset', $blockClass),
+	Components::responsiveSelectors($hide, 'hide', $blockClass, false),
+	Components::responsiveSelectors($order, 'order', $blockClass),
+	Components::responsiveSelectors($align, 'align', $blockClass),
 ]);
 ?>
 
-<div class="<?php echo \esc_attr($columnClass); ?>">
-	<?php echo $innerBlockContent; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+<div class="<?php echo \esc_attr($componentClass); ?>">
+	<?php echo \wp_kses_post($innerBlockContent); ?>
 </div>

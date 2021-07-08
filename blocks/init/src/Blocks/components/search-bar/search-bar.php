@@ -9,8 +9,9 @@
 use EightshiftBoilerplateVendor\EightshiftLibs\Helpers\Components;
 
 $manifest = Components::getManifest(__DIR__);
+$componentName = $attributes['componentName'] ?? $manifest['componentName'];
 
-$searchBarUse = Components::checkAttr('searchBarUse', $attributes, $manifest);
+$searchBarUse = Components::checkAttr('searchBarUse', $attributes, $manifest, $componentName);
 if (!$searchBarUse) {
 	return;
 }
@@ -19,13 +20,13 @@ $componentClass = $attributes['componentClass'] ?? $manifest['componentClass'];
 $selectorClass = $attributes['selectorClass'] ?? $componentClass;
 $blockClass = $attributes['blockClass'] ?? '';
 
-$searchBarMethod = Components::checkAttr('searchBarMethod', $attributes, $manifest);
-$searchBarPostType = Components::checkAttr('searchBarPostType', $attributes, $manifest);
-$searchBarAction = Components::checkAttr('searchBarAction', $attributes, $manifest);
-$searchBarPlaceholder = Components::checkAttr('searchBarPlaceholder', $attributes, $manifest);
-$searchBarId = Components::checkAttr('searchBarId', $attributes, $manifest);
-$searchBarLabel = Components::checkAttr('searchBarLabel', $attributes, $manifest);
-$searchBarLabelShow = Components::checkAttr('searchBarLabelShow', $attributes, $manifest);
+$searchBarMethod = Components::checkAttr('searchBarMethod', $attributes, $manifest, $componentName);
+$searchBarPostType = Components::checkAttr('searchBarPostType', $attributes, $manifest, $componentName);
+$searchBarAction = Components::checkAttr('searchBarAction', $attributes, $manifest, $componentName);
+$searchBarPlaceholder = Components::checkAttr('searchBarPlaceholder', $attributes, $manifest, $componentName);
+$searchBarId = Components::checkAttr('searchBarId', $attributes, $manifest, $componentName);
+$searchBarLabel = Components::checkAttr('searchBarLabel', $attributes, $manifest, $componentName);
+$searchBarLabelShow = Components::checkAttr('searchBarLabelShow', $attributes, $manifest, $componentName);
 
 $searchClass = Components::classnames([
 	$componentClass,
@@ -52,7 +53,7 @@ $labelClass = Components::classnames([
 	<label
 		class="<?php echo \esc_attr($labelClass); ?>"
 		for="<?php echo \esc_attr($searchBarId); ?>">
-		<?php echo \esc_html($searchBarLabel); ?>
+		    <?php echo \esc_html($searchBarLabel); ?>
 	</label>
 	<input
 		type="text"

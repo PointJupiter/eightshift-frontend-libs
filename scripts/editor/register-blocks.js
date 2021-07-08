@@ -1,17 +1,15 @@
 import React from 'react';
-import _ from 'lodash';
 import { registerBlockType, registerBlockVariation } from '@wordpress/blocks';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { createElement } from '@wordpress/element';
 import reactHtmlParser from 'react-html-parser';
-import { blockIcons } from './icons/icons';
 
 /**
  * Filter array of JS paths and get the correct edit components.
  *
- * @param {string} blockName - Provided block name to find corresponding edit component.
- * @param {function} paths   - Function of all JavaScript files in a block got from require.context.
- * @param {string} fileName  - Block partial name.
+ * @param {string} blockName Provided block name to find corresponding edit component.
+ * @param {function} paths Function of all JavaScript files in a block got from require.context.
+ * @param {string} fileName Block partial name.
  *
  */
 export const getBlockEditComponent = (blockName, paths, fileName) => {
@@ -41,9 +39,9 @@ export const getBlockEditComponent = (blockName, paths, fileName) => {
 /**
  * Filter array of JS paths and get the correct transforms, hooks, etc components.
  *
- * @param {string} blockName - Provided block name to find corresponding edit component.
- * @param {function} paths   - Function of all JavaScript files in a block got from require.context.
- * @param {string} fileName  - Block partial name.
+ * @param {string} blockName Provided block name to find corresponding edit component.
+ * @param {function} paths Function of all JavaScript files in a block got from require.context.
+ * @param {string} fileName Block partial name.
  *
  */
 export const getBlockGenericComponent = (blockName, paths, fileName) => {
@@ -66,10 +64,8 @@ export const getBlockGenericComponent = (blockName, paths, fileName) => {
 /**
  * Check if namespace is defined in block or in global manifest settings and return namespace.
  *
- * @param {object} globalManifest - Global manifest.
- * @param {object} blockManifest  - Block manifest.
- * 
- * @returns {string?}
+ * @param {object} globalManifest Blocks global shared manifest.
+ * @param {object} blockManifest Block full manifest.
  */
 export const getNamespace = (globalManifest, blockManifest) => {
 	return (typeof blockManifest.namespace === 'undefined') ? globalManifest.namespace : blockManifest.namespace;
@@ -78,10 +74,8 @@ export const getNamespace = (globalManifest, blockManifest) => {
 /**
  * Return full block name used in Block Editor with correct namespace.
  *
- * @param {object} globalManifest - Global manifest.
- * @param {object} blockManifest  - Block manifest.
- * 
- * @returns {string}
+ * @param {object} globalManifest Blocks global shared manifest.
+ * @param {object} blockManifest Block full manifest.
  */
 export const getFullBlockName = (globalManifest, blockManifest) => {
 	return `${getNamespace(globalManifest, blockManifest)}/${blockManifest.blockName}`;
@@ -90,10 +84,8 @@ export const getFullBlockName = (globalManifest, blockManifest) => {
 /**
  * Return full block name used in Block Editor with correct namespace.
  *
- * @param {object} globalManifest - Global manifest.
- * @param {object} blockManifest  - Block manifest.
- * 
- * @returns {string}
+ * @param {object} globalManifest Blocks global shared manifest.
+ * @param {object} blockManifest Block full manifest.
  */
 export const getFullBlockNameVariation = (globalManifest, blockManifest) => {
 	return `${getNamespace(globalManifest, blockManifest)}/${blockManifest.parentName}`;
@@ -102,9 +94,7 @@ export const getFullBlockNameVariation = (globalManifest, blockManifest) => {
 /**
  * Return save function based on hasInnerBlocks option of block.
  *
- * @param {object} blockManifest - Block manifest.
- * 
- * @returns {function} Save callback.
+ * @param {object} blockManifest Block full manifest.
  */
 export const getSaveCallback = (blockManifest) => {
 	const {
@@ -119,73 +109,11 @@ export const getSaveCallback = (blockManifest) => {
 };
 
 /**
- * Return merge function based on existence of `mergeableAttributes` option of block.
- *
- * @param {object} blockManifest - Block manifest.
- */
-export const getMergeCallback = (blockManifest) => {
-	const {
-		mergeableAttributes,
-	} = blockManifest;
-
-	if (mergeableAttributes) {
-		return (receiver, merger) => {
-			let outputObject = {};
-
-			for (const { attribute, mergeStrategy } of mergeableAttributes) {
-				switch (mergeStrategy) {
-					case "append": {
-						outputObject[attribute] = `${receiver[attribute] ?? ''}${merger[attribute] ?? ''}`;
-						break;
-					}
-					case "useDestinationAttribute": {
-						outputObject[attribute] = merger[attribute] ?? ''
-						break;
-					}
-					case "addNumericIntValue": {
-						outputObject[attribute] = parseInt(receiver[attribute] ?? '0') + parseInt(merger[attribute] ?? '0');
-						break;
-					}
-					case "addNumericFloatValue": {
-						outputObject[attribute] = parseFloat(receiver[attribute] ?? '0') + parseFloat(merger[attribute] ?? '0');
-						break;
-					}
-					/* eslint-disable no-case-declarations */
-					case "addNumericPixelValue": {
-						// Remove numbers
-						const receiverUnit = (receiver[attribute] ?? '0px').replace(/\d/g, '');
-
-						// Remove value labels (= everything but numbers)
-						const receiverValue = parseInt(receiver[attribute] ?? '0px').replace(/\D/g, '');
-						const mergerValue = parseInt(receiver[attribute] ?? '0px').replace(/\D/g, '');
-						const calculatedValue = receiverValue + mergerValue;
-
-						outputObject[attribute] = `${calculatedValue}${receiverUnit}`
-						break;
-					}
-					/* eslint-enable no-case-declarations */
-					default: {
-						// "useSourceAttribute" is default
-						outputObject[attribute] = receiver[attribute] ?? ''
-						break;
-					}
-				}
-			}
-
-			return outputObject;
-		};
-	}
-
-	return () => null;
-};
-
-/**
  * Return edit function wrapped with Wrapper component.
  *
- * @param {React.Component} Component - Component to render inside the wrapper.
- * @param {React.Component} Wrapper   - Wrapper component.
+ * @param {function} Component Children callback function.
+ * @param {function} Wrapper Wrapper callback function.
  *
- * @returns {React.Component}
  */
 export const getEditCallback = (Component, Wrapper) => (props) => {
 	return (
@@ -198,16 +126,10 @@ export const getEditCallback = (Component, Wrapper) => (props) => {
 /**
  * Set icon object with icon, background and foreground.
  *
- * @param {object} globalManifest - Global manifest.
- * @param {object} blockManifest  - Block manifest.
- * 
- * @returns {object}
+ * @param {object} globalManifest Blocks global shared manifest.
+ * @param {object} blockManifest Block full manifest.
  */
-export const getIconOptions = (
-	globalManifest,
-	blockManifest
-) => {
-
+export const getIconOptions = (globalManifest, blockManifest) => {
 	const {
 		background: backgroundGlobal,
 		foreground: foregroundGlobal,
@@ -221,162 +143,25 @@ export const getIconOptions = (
 		return {};
 	}
 
-	// Use built-in icons if 'src' is provided and the
-	// icon exists in the library
-	if (icon.src !== undefined && blockIcons[icon.src] !== undefined) {
-		return {
-			background: (typeof icon.background === 'undefined') ? backgroundGlobal : icon.background,
-			foreground: (typeof icon.foreground === 'undefined') ? foregroundGlobal : icon.foreground,
-			src: reactHtmlParser(blockIcons[icon.src])[0],
-		}
-	}
-
 	return {
 		background: (typeof icon.background === 'undefined') ? backgroundGlobal : icon.background,
-		foreground: (typeof icon.foreground === 'undefined') ? foregroundGlobal : icon.foreground,
+		foreground: (typeof icon.background === 'undefined') ? foregroundGlobal : icon.foreground,
 		src: (icon.src.includes('<svg')) ? reactHtmlParser(icon.src)[0] : icon.src,
 	};
 };
 
 /**
- * Iterate over attributes or example attributes object in block/component manifest and append the parent prefixes.
+ * Return shared attributes.
  *
- * @param {object} manifest           - Object of component/block manifest to get data from.
- * @param {string} newName            - New renamed component name.
- * @param {string} realName           - Original real component name.
- * @param {boolean} [isExample=false] - Type of items to iterate, if false example key will be use, if true attributes will be used.
- * @param {string} [parent='']        - Parent component key with stacked parent component names for the final output.
- * 
- * @returns {object}
+ * @param {object} globalManifest Blocks global shared manifest.
+ * @param {object} blockManifest Block full manifest.
  */
-export const prepareComponentAttribute = (manifest, newName, realName, isExample = false, parent = '') => {
-	const output = {};
-
-	// Define different data point for attributes or example.
-	const componentAttributes = isExample ? manifest?.example?.attributes : manifest?.attributes;
-
-	// It can occur that attributes or example key is missing in manifest so bailout.
-	if (typeof componentAttributes === 'undefined') {
-		return output;
-	}
-
-	// Iterate each attribute and attach parent prefixes.
-	for (const [componentAttribute] of Object.entries(componentAttributes)) {
-
-		let attribute = componentAttribute;
-
-		// If there is a attribute name switch use the new one.
-		if (newName !== realName) {
-			attribute = _.camelCase(componentAttribute.replace(realName, newName));
-		}
-
-		// Determine if parent is empty and if parent name is the same as component/block name.
-		const attributeName = (parent === '' || parent === newName) ? attribute : `${_.lowerFirst(parent)}${_.upperFirst(attribute)}`;
-
-		// Output new attribute names.
-		output[attributeName] = componentAttributes[componentAttribute];
-	}
-
-	return output;
-};
-
-/**
- * Iterate over component object in block manifest and check if the component exists in the project.
- * If components contains more component this function will run recursively.
- *
- * @param {object} componentsManifest - Object of components manifest to iterate.
- * @param {object} manifest           - Object of component/block manifest to get the data from.
- * @param {boolean} [isExample=false] - Type of items to iterate, if true example key will be used, if false attributes will be used.
- * @param {string} [parent='']        - Parent component key with stacked parent component names for the final output.
- * 
- * @returns {object}
- */
-export const prepareComponentAttributes = (
-	componentsManifest,
-	manifest,
-	isExample = false,
-	parent = ''
-) => {
-	const output = {};
-
-	const {
-		components = {},
-	} = manifest;
-
-	// Determine if this is component or block and provide the name, not used for anything important but only to output the error msg.
-	const name = Object.prototype.hasOwnProperty.call(manifest, 'blockName') ? manifest.blockName : manifest.componentName;
-
-	// Iterate over components key in manifest recursively and check component names.
-	for (let [newComponentName, realComponentName] of Object.entries(components)) {
-
-		// Filter components real name.
-		const [component] = componentsManifest.filter((item) => item.componentName === _.kebabCase(realComponentName));
-
-		// Bailout if component doesn't exist.
-		if (!component) {
-			throw Error(`Component specified in "${name}" manifest doesn't exist in your components list. Please check if you project has "${realComponentName}" component.`);
-		}
-
-		let outputAttributes = {};
-
-		// If component has more components do recursive loop.
-		if (Object.prototype.hasOwnProperty.call(component, 'components')) {
-			outputAttributes = prepareComponentAttributes(componentsManifest, component, isExample, `${parent}${_.upperFirst(newComponentName)}`);
-		} else {
-			// Output the component attributes if there is no nesting left, and append the parent prefixes.
-			outputAttributes = prepareComponentAttribute(component, newComponentName, realComponentName, isExample, parent);
-		}
-
-		// Populate the output recursively.
-		Object.assign(
-			output,
-			{
-				...output,
-				...outputAttributes,
-			}
-		);
-	}
-
-	// Add the current block attributes to the output.
-	if (Object.prototype.hasOwnProperty.call(manifest, 'blockName')) {
-		Object.assign(output, prepareComponentAttribute(manifest, '', '', isExample));
-	} else {
-		// Add the current component attributes to the output.
-		Object.assign(output, prepareComponentAttribute(manifest, '', name, isExample, parent));
-	}
-
-	return output;
-};
-
-/**
- * Get Block attributes combined in one: "shared, global, wrapper, components, block".
- *
- * @param {object} globalManifest     - Global manifest.
- * @param {object} wrapperManifest    - `Wrapper` manifest.
- * @param {object} componentsManifest - Component manifest to iterate through.
- * @param {object} blockManifest      - Block manifest.
- * 
- * @returns {object}
- */
-export const getAttributes = (
-	globalManifest,
-	wrapperManifest,
-	componentsManifest,
-	blockManifest
-) => {
+export const getSharedAttributes = (globalManifest, blockManifest) => {
 	const {
 		blockName,
 	} = blockManifest;
 
-	const {
-		attributes: attributesGlobal,
-	} = globalManifest;
-
-	const {
-		attributes: attributesWrapper,
-	} = wrapperManifest;
-
-	const output = {
+	return {
 		blockName: {
 			type: 'string',
 			default: blockName,
@@ -393,36 +178,148 @@ export const getAttributes = (
 			type: 'string',
 			default: `js-block-${blockName}`,
 		},
-		...((typeof attributesGlobal === 'undefined') ? {} : attributesGlobal),
-		...((typeof attributesWrapper === 'undefined') ? {} : attributesWrapper),
-		...prepareComponentAttributes(componentsManifest, blockManifest),
 	};
+};
+
+/**
+ * Iterate over component object in block manifest and search and replace the component attributes with new one.
+ * Search and replace the component attributes with new one.
+ *
+ * @param {object} component Object of component manifests to iterate.
+ * @param {string} realComponentName React component name defined in the component manifest.
+ * @param {string} newComponentName New component name to search and replace the original.
+ * @param {string} key Change output, can be: "attributes" or "example".
+ */
+export const prepareComponentAttribute = (component, realComponentName, newComponentName, key = 'attributes') => {
+	let output = {};
+
+	let componentAttributes = {};
+
+	if (key === 'attributes') {
+		componentAttributes = component.attributes;
+	}
+
+	if (key === 'example') {
+		componentAttributes = component.example.attributes;
+	}
+
+	if (realComponentName !== newComponentName) {
+		for (const componentAttribute in componentAttributes) {
+			if (Object.prototype.hasOwnProperty.call(componentAttributes, componentAttribute)) {
+				const newName = componentAttribute.replace(realComponentName, newComponentName);
+
+				output[newName] = componentAttributes[componentAttribute];
+			}
+		}
+	} else {
+		output = componentAttributes;
+	}
 
 	return output;
 };
 
 /**
+ * Iterate over component object in block manifest and check if the component exists in the project.
+ * If components contains more component this function will run recursively.
+ *
+ * @param {object} componentsManifest Object of component manifests to iterate.
+ * @param {object} blockManifest Object of blocks manifests to iterate.
+ * @param {string} blockName Full block name.
+ * @param {string} key Change output, can be: "attributes" or "example".
+ */
+export const prepareComponentAttributes = (componentsManifest, blockManifest, blockName, key = 'attributes') => {
+	let output = {};
+
+	const {
+		components = {},
+		attributes = {},
+		example = {},
+	} = blockManifest;
+
+	for (const newComponentName in components) {
+		if (Object.prototype.hasOwnProperty.call(components, newComponentName)) {
+
+			const realComponentName = components[newComponentName];
+
+			const [component] = componentsManifest.filter((item) => item.componentName === realComponentName);
+
+			if (!component) {
+				throw Error(`Component specified in "${blockName}" blocks manifest doesn't exist in your components list. Please check if you project has "${realComponentName}" component.`);
+			}
+
+			let outputAttributes = {};
+
+			if (Object.prototype.hasOwnProperty.call(component, 'components')) {
+				outputAttributes = prepareComponentAttributes(componentsManifest, component, blockName, key);
+			} else {
+				outputAttributes = prepareComponentAttribute(component, realComponentName, newComponentName, key);
+			}
+
+			output = {
+				...output,
+				...outputAttributes,
+				...(key === 'attributes' ? attributes : example.attributes),
+			};
+		}
+	}
+
+	return output;
+};
+
+/**
+ * Get Block attributes combined in one: "shared, global, wrapper, components, block".
+ *
+ * @param {object} globalManifest Blocks global shared manifest.
+ * @param {object} wrapperManifest Wrapper full manifest.
+ * @param {object} componentsManifest Object of component manifests to iterate.
+ * @param {object} blockManifest Block full manifest.
+ */
+export const getAttributes = (globalManifest, wrapperManifest, componentsManifest, blockManifest) => {
+	const {
+		attributes: attributesGlobal,
+	} = globalManifest;
+
+	const {
+		attributes: attributesWrapper,
+	} = wrapperManifest;
+
+	const {
+		attributes = {},
+	} = blockManifest;
+
+	return {
+		...getSharedAttributes(globalManifest, blockManifest),
+		...((typeof attributesGlobal === 'undefined') ? {} : attributesGlobal),
+		...((typeof attributesWrapper === 'undefined') ? {} : attributesWrapper),
+		...prepareComponentAttributes(componentsManifest, blockManifest, getFullBlockName(globalManifest, blockManifest)),
+		...attributes,
+	};
+};
+
+/**
  * Get Block example attributes combined in one: "components and block".
  *
- * @param {object} componentsManifest - Component manifest to iterate through.
- * @param {object} manifest           - Block/component manifest.
- * 
- * @returns {object}
+ * @param {object} globalManifest Blocks global shared manifest.
+ * @param {object} componentsManifest Object of component manifests to iterate.
+ * @param {object} blockManifest Block full manifest.
  */
-export const getExample = (
-	componentsManifest = {},
-	manifest = {}
-) => {
-	return prepareComponentAttributes(componentsManifest, manifest, true);
+export const getExample = (globalManifest, componentsManifest, blockManifest) => {
+	const {
+		example = {},
+	} = blockManifest;
+
+	return {
+		...prepareComponentAttributes(componentsManifest, blockManifest, getFullBlockName(globalManifest, blockManifest), 'example'),
+		...example.attributes,
+	};
 };
 
 /**
  * Map and prepare all options from block manifest.json file for usage in registerBlockVariation method.
  *
- * @param {object} globalManifest - Global manifest.
- * @param {object} blockManifest  - Block manifest.
+ * @param {object} globalManifest Global blocks manifest.json object with namespace.
+ * @param {object} blockManifest Block manifest.json object with data.
  *
- * @returns {object}
  */
 export const registerVariation = (
 	globalManifest = {},
@@ -430,7 +327,7 @@ export const registerVariation = (
 ) => {
 
 	// Append globalManifest data in to output.
-	blockManifest['icon'] = getIconOptions(globalManifest, blockManifest);
+	blockManifest.icon = getIconOptions(globalManifest, blockManifest);
 
 	// This is a full block name used in Block Editor.
 	const fullBlockName = getFullBlockNameVariation(globalManifest, blockManifest);
@@ -447,14 +344,13 @@ export const registerVariation = (
 /**
  * Map and prepare all options from block manifest.json file for usage in registerBlockType method.
  *
- * @param {object} globalManifest     - Global manifest.
- * @param {object} wrapperManifest    - `Wrapper` manifest.
- * @param {object} componentsManifest - Manifest of all components in a single object.
- * @param {object} blockManifest      - Block manifest.
- * @param {function} wrapperComponent - Callback function that returns a `Wrapper`.
- * @param {function} blockComponent   - Edit callback function.
+ * @param {object} globalManifest Global blocks manifest.json object.
+ * @param {object} wrapperManifest Wrapper manifest.json object.
+ * @param {object} componentsManifest All components manifest.json objects in an single object.
+ * @param {object} blockManifest Block manifest.json object with data.
+ * @param {function} wrapperComponent Wrapper callback function.
+ * @param {function} blockComponent Edit callback function.
  *
- * @returns {object}
  */
 export const registerBlock = (
 	globalManifest = {},
@@ -466,21 +362,20 @@ export const registerBlock = (
 ) => {
 
 	// Block Icon option.
-	blockManifest['icon'] = getIconOptions(globalManifest, blockManifest);
+	blockManifest.icon = getIconOptions(globalManifest, blockManifest);
 
 	// This is a full block name used in Block Editor.
 	const fullBlockName = getFullBlockName(globalManifest, blockManifest);
 
 	// Set full attributes list.
-	blockManifest['attributes'] = getAttributes(globalManifest, wrapperManifest, componentsManifest, blockManifest);
+	blockManifest.attributes = getAttributes(globalManifest, wrapperManifest, componentsManifest, blockManifest);
 
 	// Set full example list.
-	if (typeof blockManifest['example'] === 'undefined') {
-		blockManifest['example'] = {};
+	if (typeof blockManifest.example === 'undefined') {
+		blockManifest.example = {};
 	}
 
-	// Set full examples list.
-	blockManifest['example'].attributes = getExample(componentsManifest, blockManifest);
+	blockManifest.example.attributes = getExample(globalManifest, componentsManifest, blockManifest);
 
 	return {
 		blockName: fullBlockName,
@@ -489,25 +384,23 @@ export const registerBlock = (
 			blockName: fullBlockName,
 			edit: getEditCallback(blockComponent, wrapperComponent),
 			save: getSaveCallback(blockManifest),
-			merge: getMergeCallback(blockManifest),
 		},
 	};
 };
 
 /**
- * Register all Block Editor blocks using WP `registerBlockType` method.
- * Due to restrictions in dynamic import using dynamic names all blocks are registered using `require.context`.
+ * Register all Block Editor blocks using WP registerBlockType method.
+ * Due to restrictions in dynamic import using dynamic names all block are register using require.context.
  *
- * @param {object} globalManifest               - Must provide global blocks setting manifest.json.
- * @param {function?} [wrapperComponent]        - Callback function that returns a `Wrapper`.
- * @param {object} wrapperManifest              - `Wrapper` manifest.
- * @param {function} componentsManifestPath     - **Must provide `require.context` for all components `manifest.json`s.**
- * @param {function} blocksManifestPath         - **Must provide `require.context` for all blocks manifest.json-s.**
- * @param {function} blocksEditComponentPath    - **Must provide `require.context` for all blocks JavaScript files (unable to add only block edit file due to dynamic naming).**
- * @param {function?} [hooksComponentPath]      - Function of hooks JavaScript files in a block from `require.context`.
- * @param {function?} [transformsComponentPath] - Function of transforms JavaScript files in a block from `require.context`.
+ * @param {object} globalManifest Must provide global blocks setting manifest.json.
+ * @param {function} wrapperComponent Wrapper callback function.
+ * @param {object} wrapperManifest Wrapper manifest function.
+ * @param {function} componentsManifestPath Must provide require.context for all components manifest.json-s.
+ * @param {function} blocksManifestPath Must provide require.context for all blocks manifest.json-s.
+ * @param {function} blocksEditComponentPath Must provide require.context for all blocks JavaScript files (unable to add only block edit file due to dynamic naming).
+ * @param {function} hooksComponentPath Function of hooks JavaScript files in a block got from require.context.
+ * @param {function} transformsComponentPath Function of transforms JavaScript files in a block got from require.context.
  *
- * @returns {mixed}
  */
 export const registerBlocks = (
 	globalManifest = {},
@@ -520,11 +413,8 @@ export const registerBlocks = (
 	transformsComponentPath = null,
 ) => {
 
-	const componentsManifest = componentsManifestPath.keys().map(componentsManifestPath);
-	const blocksManifests = blocksManifestPath.keys().map(blocksManifestPath);
-
 	// Iterate blocks to register.
-	blocksManifests.map((blockManifest) => {
+	blocksManifestPath.keys().map(blocksManifestPath).map((blockManifest) => {
 
 		// Get Block edit component from block name and blocksEditComponentPath.
 		const blockComponent = getBlockEditComponent(blockManifest.blockName, blocksEditComponentPath, 'block');
@@ -547,6 +437,8 @@ export const registerBlocks = (
 			}
 		}
 
+		const componentsManifest = componentsManifestPath.keys().map(componentsManifestPath);
+
 		// Pass data to registerBlock helper to get final output for registerBlockType.
 		const blockDetails = registerBlock(
 			globalManifest,
@@ -562,25 +454,15 @@ export const registerBlocks = (
 
 		return null;
 	});
-
-	// Add icon foreground and background colors as CSS variables for later use.
-	const {
-		background: backgroundGlobal,
-		foreground: foregroundGlobal,
-	} = globalManifest;
-
-	document.documentElement.style.setProperty('--eightshift-block-icon-foreground', foregroundGlobal);
-	document.documentElement.style.setProperty('--eightshift-block-icon-background', backgroundGlobal);
 };
 
 /**
- * Register all Variations Editor blocks using WP `registerBlockVariation` method.
- * Due to restrictions in dynamic import using dynamic names all block are register using `require.context`.
+ * Register all Variations Editor blocks using WP registerBlockVariation method.
+ * Due to restrictions in dynamic import using dynamic names all block are register using require.context.
  *
- * @param {object} globalManifest       - **Must provide global blocks setting `manifest.json`.**
- * @param {function} blocksManifestPath - **Must provide require.context for all block `manifest.json`s.**
+ * @param {object} globalManifest Must provide global blocks setting manifest.json.
+ * @param {function} blocksManifestPath Must provide require.context for all blocks manifest.json-s.
  *
- * @returns {null}
  */
 export const registerVariations = (
 	globalManifest = {},

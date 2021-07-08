@@ -1,16 +1,23 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { props } from '@eightshift/frontend-libs/scripts/editor';
 import { __experimentalBlockAlignmentMatrixToolbar as BlockAlignmentMatrixToolbar } from '@wordpress/block-editor';
-import { checkAttr, getAttrKey } from '@eightshift/frontend-libs/scripts/helpers';
+import { ImageToolbar } from '../../image/components/image-toolbar';
 import { HeadingToolbar } from '../../heading/components/heading-toolbar';
+import { ParagraphToolbar } from '../../paragraph/components/paragraph-toolbar';
 import { ButtonToolbar } from '../../button/components/button-toolbar';
+import { checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
 export const JumbotronToolbar = (attributes) => {
 	const {
 		setAttributes,
+		componentName = manifest.componentName,
 		jumbotronShowControls = true,
+
+		jumbotronUse = checkAttr('jumbotronUse', attributes, manifest, componentName),
+
+		jumbotronContentPosition = checkAttr('jumbotronContentPosition', attributes, manifest, componentName),
 
 		showJumbotronContentPosition = true,
 	} = attributes;
@@ -19,32 +26,39 @@ export const JumbotronToolbar = (attributes) => {
 		return null;
 	}
 
-	const jumbotronUse = checkAttr('jumbotronUse', attributes, manifest);
-	const jumbotronContentPosition = checkAttr('jumbotronContentPosition', attributes, manifest);
-
 	return (
-		<>
+		<Fragment>
 			{jumbotronUse &&
-				<>
+				<Fragment>
 					{showJumbotronContentPosition &&
 						<BlockAlignmentMatrixToolbar
 							label={__('Content Position', 'eightshift-frontend-libs')}
-							value={jumbotronContentPosition}
-							onChange={(value) => setAttributes({ [getAttrKey('jumbotronContentPosition', attributes, manifest)]: value })}
+							value={ jumbotronContentPosition }
+							onChange={(value) => setAttributes({ [`${componentName}ContentPosition`]: value })}
 						/>
 					}
 
-				<HeadingToolbar
-					{...props(attributes, 'heading')}
-					setAttributes={setAttributes}
-				/>
+					<ImageToolbar
+						{...attributes}
+						setAttributes={setAttributes}
+					/>
 
-				<ButtonToolbar
-					{...props(attributes, 'button')}
-					setAttributes={setAttributes}
-				/>
-				</>
+					<HeadingToolbar
+						{...attributes}
+						setAttributes={setAttributes}
+					/>
+
+					<ParagraphToolbar
+						{...attributes}
+						setAttributes={setAttributes}
+					/>
+
+					<ButtonToolbar
+						{...attributes}
+						setAttributes={setAttributes}
+					/>
+				</Fragment>
 			}
-		</>
+		</Fragment>
 	);
 };

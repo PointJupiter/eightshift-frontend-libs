@@ -4,21 +4,21 @@
 	"description" : "Columns block with custom settings.",
 	"category": "eightshift",
 	"icon": {
-		"src": "es-columns"
+		"src": "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><g fill='none' fill-rule='evenodd'><path fill='none' d='M0 0h20v20H0z'/><g transform='translate(1 1)' fill='currentColor' fill-opacity='.12' stroke='currentColor' stroke-width='1.5'><rect width='4.5' height='18' rx='1.5'/><rect x='6.75' width='4.5' height='18' rx='1.5'/><rect x='13.5' width='4.5' height='18' rx='1.5'/></g></g></svg>"
 	},
 	"keywords": [
 		"columns"
 	],
 	"example": {
 		"attributes": {
-			"columnsGutterLarge": 30,
-			"columnsVerticalSpacingLarge": 30
+			"gutterLarge": 30,
+			"verticalSpacingLarge": 30
 		},
 		"innerBlocks": [
 			{
 				"name": "eightshift-boilerplate/column",
 				"attributes": {
-					"columnWidthLarge": 4
+					"widthLarge": 4
 				},
 				"innerBlocks": [
 					{
@@ -38,7 +38,7 @@
 			{
 				"name": "eightshift-boilerplate/column",
 				"attributes": {
-					"columnWidthLarge": 4
+					"widthLarge": 4
 				},
 				"innerBlocks": [
 					{
@@ -58,7 +58,7 @@
 			{
 				"name": "eightshift-boilerplate/column",
 				"attributes": {
-					"columnWidthLarge": 4
+					"widthLarge": 4
 				},
 				"innerBlocks": [
 					{
@@ -79,7 +79,7 @@
 	},
 	"hasInnerBlocks": true,
 	"attributes": {
-		"columnsAllowedBlocks": {
+		"allowedBlocks": {
 			"type": "array",
 			"items": {
 				"type": "string"
@@ -89,58 +89,45 @@
 			]
 		},
 
-		"columnsGutterLarge": {
+		"gutterLarge": {
 			"type": "integer",
 			"default": 30
 		},
-		"columnsGutterDesktop": {
+		"gutterDesktop": {
 			"type": "integer"
 		},
-		"columnsGutterTablet": {
+		"gutterTablet": {
 			"type": "integer"
 		},
-		"columnsGutterMobile": {
+		"gutterMobile": {
 			"type": "integer"
 		},
 
-		"columnsVerticalSpacingLarge": {
+		"verticalSpacingLarge": {
 			"type": "integer",
 			"default": 30
 		},
-		"columnsVerticalSpacingDesktop": {
+		"verticalSpacingDesktop": {
 			"type": "integer"
 		},
-		"columnsVerticalSpacingTablet": {
+		"verticalSpacingTablet": {
 			"type": "integer"
 		},
-		"columnsVerticalSpacingMobile": {
+		"verticalSpacingMobile": {
 			"type": "integer"
-		}
-	},
-	"responsiveAttributes": {
-		"columnsGutter": {
-			"large": "columnsGutterLarge",
-			"desktop": "columnsGutterDesktop",
-			"tablet": "columnsGutterTablet",
-			"mobile": "columnsGutterMobile"
-		},
-		"columnsVerticalSpacing": {
-			"large": "columnsVerticalSpacingLarge",
-			"desktop": "columnsVerticalSpacingDesktop",
-			"tablet": "columnsVerticalSpacingTablet",
-			"mobile": "columnsVerticalSpacingMobile"
 		}
 	},
 	"options": {
-		"columnsGutter": {
+		"gutters": {
 			"min": 0,
 			"max": 100,
 			"step": 10
 		},
-		"columnsVerticalSpacing": {
-			"min": 0,
-			"max": 100,
-			"step": 10
-		}
+		"breakpoints": [
+			"large",
+			"desktop",
+			"tablet",
+			"mobile"
+		]
 	}
 }

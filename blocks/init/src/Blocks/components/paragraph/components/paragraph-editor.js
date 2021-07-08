@@ -1,68 +1,47 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
-import { selector, checkAttr, getAttrKey } from '@eightshift/frontend-libs/scripts/helpers';
-import { pasteInto, outputCssVariables, getUnique } from '@eightshift/frontend-libs/scripts/editor';
+import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
-import globalManifest from './../../../manifest.json';
 
 export const ParagraphEditor = (attributes) => {
-	const unique = useMemo(() => getUnique(), []);
-
-	const {
-		componentClass: manifestComponentClass,
-		options: manifestOptions,
-	} = manifest;
-
 	const {
 		setAttributes,
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
 		placeholder = __('Add Content', 'eightshift-frontend-libs'),
 
-		onSplit,
-		mergeBlocks,
-		onReplace,
-		onRemove,
+		paragraphUse = checkAttr('paragraphUse', attributes, manifest, componentName),
+
+		paragraphContent = checkAttr('paragraphContent', attributes, manifest, componentName),
+		paragraphColor = checkAttr('paragraphColor', attributes, manifest, componentName),
+		paragraphSize = checkAttr('paragraphSize', attributes, manifest, componentName),
+		paragraphAlign = checkAttr('paragraphAlign', attributes, manifest, componentName),
 	} = attributes;
-
-	const options = {...manifestOptions, ...attributes.options};
-
-	const paragraphUse = checkAttr('paragraphUse', attributes, manifest);
-	const paragraphContent = checkAttr('paragraphContent', attributes, manifest);
 
 	const paragraphClass = classnames([
 		componentClass,
+		selector(paragraphColor, componentClass, 'color', paragraphColor),
+		selector(paragraphSize, componentClass, 'size', paragraphSize),
+		selector(paragraphAlign, componentClass, 'align', paragraphAlign),
 		selector(blockClass, blockClass, selectorClass),
 	]);
 
 	return (
-		<>
+		<Fragment>
 			{paragraphUse &&
-				<>
-					{outputCssVariables(attributes, manifest, unique, globalManifest)}
-
-					<RichText
-						identifier={getAttrKey('paragraphContent', attributes, manifest)}
-						className={paragraphClass}
-						placeholder={placeholder}
-						value={paragraphContent}
-						onChange={(value) => {
-							setAttributes({ [getAttrKey('paragraphContent', attributes, manifest)]: value })
-						}}
-						allowedFormats={['core/bold', 'core/link', 'core/italic']}
-						onSplit={onSplit}
-						onMerge={mergeBlocks}
-						onReplace={onReplace}
-						onRemove={onRemove}
-						onPaste={(event) => pasteInto(event, attributes, setAttributes, options.pasteAllowTags, 'p')}
-						deleteEnter={true}
-						data-id={unique}
-					/>
-				</>
+				<RichText
+					className={paragraphClass}
+					placeholder={placeholder}
+					value={paragraphContent}
+					onChange={(value) => setAttributes({ [`${componentName}Content`]: value })}
+					formattingControls={['bold', 'link']}
+				/>
 			}
-		</>
+		</Fragment>
 	);
 };

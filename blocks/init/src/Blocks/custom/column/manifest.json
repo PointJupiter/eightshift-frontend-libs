@@ -4,7 +4,7 @@
 	"description" : "Column block with custom settings.",
 	"category": "eightshift",
 	"icon": {
-		"src": "es-column"
+		"src": "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><g transform='translate(-2761 -492)' fill='none' fill-rule='evenodd'><path fill='none' d='M2761 492h20v20h-20z'/><rect stroke='currentColor' stroke-width='1.5' fill-opacity='.12' fill='currentColor' x='2766' y='493' width='10' height='18' rx='1.5'/></g></svg>"
 	},
 	"keywords": [
 		"column"
@@ -15,13 +15,13 @@
 	"example": {
 		"attributes": {
 			"wrapperDisable": true,
-			"columnWidthLarge": 4
+			"widthLarge": 4
 		},
 		"innerBlocks": [
 			{
 				"name": "eightshift-boilerplate/card",
 				"attributes": {
-					"imageUrl": "https://loremflickr.com/800/800",
+					"imageUrl": "https://picsum.photos/400/400",
 					"introContent": "Intro",
 					"introSize": "small",
 					"introColor": "light",
@@ -38,122 +38,99 @@
 			"type": "boolean",
 			"default": true
 		},
-
-		"columnWidthLarge": {
+		"widthLarge": {
 			"type": "integer",
 			"default": 4
 		},
-		"columnWidthDesktop": {
+		"widthDesktop": {
 			"type": "integer"
 		},
-		"columnWidthTablet": {
+		"widthTablet": {
 			"type": "integer"
 		},
-		"columnWidthMobile": {
-			"type": "integer"
-		},
-
-		"columnOffsetLarge": {
-			"type": "integer"
-		},
-		"columnOffsetDesktop": {
-			"type": "integer"
-		},
-		"columnOffsetTablet": {
-			"type": "integer"
-		},
-		"columnOffsetMobile": {
+		"widthMobile": {
 			"type": "integer"
 		},
 
-		"columnHideLarge": {
-			"type": "boolean"
-		},
-		"columnHideDesktop": {
-			"type": "boolean"
-		},
-		"columnHideTablet": {
-			"type": "boolean"
-		},
-		"columnHideMobile": {
-			"type": "boolean"
-		},
-
-		"columnOrderLarge": {
+		"offsetLarge": {
 			"type": "integer"
 		},
-		"columnOrderDesktop": {
+		"offsetDesktop": {
 			"type": "integer"
 		},
-		"columnOrderTablet": {
+		"offsetTablet": {
 			"type": "integer"
 		},
-		"columnOrderMobile": {
+		"offsetMobile": {
 			"type": "integer"
 		},
 
-		"columnAlignLarge": {
+		"hideLarge": {
+			"type": "boolean"
+		},
+		"hideDesktop": {
+			"type": "boolean"
+		},
+		"hideTablet": {
+			"type": "boolean"
+		},
+		"hideMobile": {
+			"type": "boolean"
+		},
+
+		"orderLarge": {
+			"type": "integer"
+		},
+		"orderDesktop": {
+			"type": "integer"
+		},
+		"orderTablet": {
+			"type": "integer"
+		},
+		"orderMobile": {
+			"type": "integer"
+		},
+
+		"alignLarge": {
 			"type": "string"
 		},
-		"columnAlignDesktop": {
+		"alignDesktop": {
 			"type": "string"
 		},
-		"columnAlignTablet": {
+		"alignTablet": {
 			"type": "string"
 		},
-		"columnAlignMobile": {
+		"alignMobile": {
 			"type": "string"
-		}
-	},
-	"responsiveAttributes": {
-		"columnWidth": {
-			"large": "columnWidthLarge",
-			"desktop": "columnWidthDesktop",
-			"tablet": "columnWidthTablet",
-			"mobile": "columnWidthMobile"
-		},
-		"columnOffset": {
-			"large": "columnOffsetLarge",
-			"desktop": "columnOffsetDesktop",
-			"tablet": "columnOffsetTablet",
-			"mobile": "columnOffsetMobile"
-		},
-		"columnHide": {
-			"large": "columnHideLarge",
-			"desktop": "columnHideDesktop",
-			"tablet": "columnHideTablet",
-			"mobile": "columnHideMobile"
-		},
-		"columnOrder": {
-			"large": "columnOrderLarge",
-			"desktop": "columnOrderDesktop",
-			"tablet": "columnOrderTablet",
-			"mobile": "columnOrderMobile"
-		},
-		"columnAlign": {
-			"large": "columnAlignLarge",
-			"desktop": "columnAlignDesktop",
-			"tablet": "columnAlignTablet",
-			"mobile": "columnAlignMobile"
 		}
 	},
 	"options": {
-		"columnWidth": {
+		"breakpoints": [
+			"large",
+			"desktop",
+			"tablet",
+			"mobile"
+		],
+		"widths": {
 			"min":  1,
 			"max":  12,
 			"step": 1
 		},
-		"columnOffset": {
+		"offsets": {
 			"min": 0,
 			"max": 12,
 			"step": 1
 		},
-		"columnOrder": {
+		"orders": {
 			"min":  1,
 			"max":  20,
 			"step": 1
 		},
-		"columnAlign": [
+		"aligns": [
+			{
+				"label": "Stretch",
+				"value": "stretch"
+			},
 			{
 				"label": "Top",
 				"value": "top"

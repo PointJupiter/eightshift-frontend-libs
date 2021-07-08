@@ -8,6 +8,7 @@
 			"listsOrdered": "ul",
 			"listsSize": "default",
 			"listsColor": "primary",
+			"listsAlign": "left",
 			"listsUse": true
 		}
 	},
@@ -28,77 +29,34 @@
 			"type": "string",
 			"default": "primary"
 		},
+		"listsAlign": {
+			"type": "string",
+			"default": "left"
+		},
 		"listsUse": {
 			"type": "boolean",
 			"default": true
 		}
 	},
 	"options": {
-		"listsSize": [
+		"sizes": [
 			{
-				"label": "Default (1em)",
+				"label": "Default (22px)",
 				"value": "default"
 			},
 			{
-				"label": "Small (0.8em)",
+				"label": "Small (18px)",
 				"value": "small"
 			}
 		],
-		"listsColor": [
+		"aligns": [
+			"left",
+			"center",
+			"right"
+		],
+		"colors": [
 			"primary",
 			"black"
 		]
-	},
-	"variables": {
-		"listsSize": {
-			"default": [
-				{
-					"variable": {
-						"lists-font-size": "0.8em",
-						"lists-line-height": "1.5"
-					}
-				},
-				{
-					"breakpoint": "tablet",
-					"variable": {
-						"lists-font-size": "1em"
-					}
-				}
-			],
-			"small": [
-				{
-					"variable": {
-						"lists-font-size": "0.6em",
-						"lists-line-height": "1.3"
-					}
-				},
-				{
-					"breakpoint": "tablet",
-					"variable": {
-						"lists-font-size": "0.8em"
-					}
-				}
-			]
-		},
-		"listsColor": {
-			"primary": [
-				{
-					"variable": {
-						"lists-color": "var(--global-colors-primary)",
-						"lists-link-color": "var(--global-colors-black)",
-						"lists-link-color-hover": "var(--global-colors-light)"
-					}
-				}
-			],
-			"black": [
-				{
-					"variable": {
-						"lists-color": "var(--global-colors-black)",
-						"lists-link-color": "var(--global-colors-primary)",
-						"lists-link-color-hover": "var(--global-colors-light)"
-					}
-				}
-			]
-		}
 	}
 }

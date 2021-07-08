@@ -1,23 +1,24 @@
 import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
-import { checkAttr, getAttrKey } from '@eightshift/frontend-libs/scripts/helpers';
+import { checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
 export const ExampleEditor = ({ attributes, setAttributes }) => {
 	const {
 		blockClass,
-	} = attributes;
+		placeholder = __('Add Content', 'eightshift-frontend-libs'),
 
-	const exampleContent = checkAttr('exampleContent', attributes, manifest);
+		content = checkAttr('content', attributes, manifest),
+	} = attributes;
 
 	return (
 		<RichText
-			placeholder={__('Add Content', 'eightshift-frontend-libs')}
+			placeholder={placeholder}
 			className={blockClass}
-			onChange={(value) => setAttributes({ [getAttrKey('exampleContent', attributes, manifest)]: value })}
-			value={exampleContent}
-			allowedFormats={['core/bold', 'core/link']}
+			onChange={(value) => setAttributes({ content: value })}
+			value={content}
+			formattingControls={['bold', 'link']}
 		/>
 	);
 };

@@ -2,132 +2,77 @@ $btn: (
 	colors: (
 		primary: (
 			normal: (
-				background-color: global-settings(colors, blue-9),
+				background-color: global-settings(colors, primary),
 				color: global-settings(colors, white),
 			),
 			hover: (
-				background-color: global-settings(colors, blue-7),
+				background-color: global-settings(colors, black),
 			),
 		),
-		blue-10: (
+		black: (
 			normal: (
-				background-color: global-settings(colors, blue-10),
-				color: global-settings(colors, blue-2),
-			),
-			hover: (
-				background-color: global-settings(colors, blue-10),
-				color: global-settings(colors, blue-2),
-			),
-		),
-		bordered: (
-			normal: (
-				border: 1px solid global-settings(colors, blue-10),
-				background-color: global-settings(colors, transparent),
-				color: global-settings(colors, blue-2),
-			),
-			hover: (
-				border: 1px solid global-settings(colors, blue-10),
-				background-color: global-settings(colors, transparent),
-				color: global-settings(colors, blue-2),
-			),
-		),
-		transparent: (
-			normal: (
-				background-color: global-settings(colors, transparent),
+				background-color: global-settings(colors, black),
 				color: global-settings(colors, white),
 			),
 			hover: (
-				background-color: global-settings(colors, transparent),
-				color: global-settings(colors, blue-5),
-			),
-		),
-		white: (
-			normal: (
-				background-color: global-settings(colors, white),
-				color: global-settings(colors, blue-7),
-				border: 1px solid global-settings(colors, blue-7),
-			),
-			hover: (
-				background-color: global-settings(colors, white),
-				color: global-settings(colors, blue-7),
-				border: 1px solid global-settings(colors, blue-7),
+				background-color: global-settings(colors, primary),
 			),
 		),
 	),
 	sizes: (
 		mobile: (
-			flat: (
-				padding: 0,
-				border-radius: 0,
-				font-size: 14px,
-				line-height: 1.6,
-				font-weight: 400,
-			),
-			small: (
-				padding: 0 6px,
-				border-radius: 4px,
-				font-size: 14px,
-				line-height: 1.6,
-				font-weight: 400,
-			),
-			medium: (
-				padding: 4px 8px,
-				border-radius: 4px,
-				font-size: 12px,
-				line-height: 1.87,
-				font-weight: 400,
-				letter-spacing: 0.02em,
-				text-transform: uppercase,
-			),
 			default: (
-				padding: 12px 24px,
-				border-radius: 4px,
 				font-size: 16px,
-				line-height: 1.6,
-				font-weight: 600,
+				line-height: 1.4,
+				height: 56px,
 			),
-			default-small: (
-				padding: 8px 16px,
-				border-radius: 4px,
-				font-size: 14px,
-				line-height: 1.6,
-				font-weight: 400,
+			big: (
+				font-size: 18px,
+				line-height: 1.4,
+				height: 80px,
 			),
 		),
-	),
-	button-icon-offset: 12px,
+		tablet: (
+			default: (
+				font-size: 18px,
+				line-height: 1.4,
+				height: 70px,
+			),
+			big: (
+				font-size: 20px,
+				line-height: 1.4,
+				height: 100px,
+			)
+		)
+	)
 );
 
 .btn {
-	$this: &;
 	@extend %button-reset;
 	position: relative;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	text-decoration: none;
+	padding: 12px 50px;
+	font-weight: bold;
 	text-align: center;
 	cursor: pointer;
+	border-radius: 50px;
 	transition: {
-		property: background-color, color;
+		property: background-color, color, border-color;
 		timing-function: ease-in;
-		duration: 0.15s;
+		duration: 0.3s;
 	}
 
 	@include link(map-get-strict($btn, colors), primary);
 
 	&:disabled {
 		cursor: not-allowed;
-		pointer-events: none;
-	}
-
-	&__content,
-	&__icon {
-		pointer-events: none; // used for close modal trigger to recognize the target element
 	}
 
 	&__size-width {
-		&--full-width {
+		&--block {
 			display: flex;
 			width: 100%;
 		}
@@ -137,45 +82,15 @@ $btn: (
 		@include link-modifiers($btn, colors);
 	}
 
-	&__wrap {
-		display: flex;
-	}
-
-	&__align {
-		@include flex-horizontal-align-modifiers;
-	}
-
-	&--has-icon {
-		#{$this}__icon {
-			color: inherit;
-		}
-	}
-
-	&--icon-position {
-		&-right {
-			flex-direction: row-reverse;
-
-			#{$this}__icon {
-				margin-left: map-get-strict($btn, button-icon-offset);
-			}
-		}
-
-		&-left {
-			#{$this}__icon {
-				margin-right: map-get-strict($btn, button-icon-offset);
-			}
-		}
-
-		&-center {
-			padding: 24px;
-		}
-	}
-
 	&__size {
 		@include responsive-modifiers($btn, sizes);
 	}
+}
 
-	&.is-active {
-		background-color: global-settings(colors, blue-11);
+.btn-wrap {
+	display: flex;
+
+	&__align {
+		@include flex-horizontal-align-modifiers;
 	}
 }

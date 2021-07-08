@@ -1,20 +1,18 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
 export const ShareEditor = (attributes) => {
 	const {
-		componentClass: manifestComponentClass,
-	} = manifest;
-
-	const {
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
-	} = attributes;
 
-	const shareUse = checkAttr('shareUse', attributes, manifest);
+		shareUse = checkAttr('shareUse', attributes, manifest, componentName),
+	} = attributes;
 
 	const shareClass = classnames(
 		componentClass,
@@ -27,7 +25,7 @@ export const ShareEditor = (attributes) => {
 	);
 
 	return (
-		<>
+		<Fragment>
 			{shareUse &&
 				<div className={shareClass}>
 					{manifest.socialOptions.map((socialOption, key) => {
@@ -37,6 +35,6 @@ export const ShareEditor = (attributes) => {
 					})}
 				</div>
 			}
-		</>
+		</Fragment>
 	);
 };

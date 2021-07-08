@@ -1,17 +1,9 @@
 import React from 'react';
 import { __ } from '@wordpress/i18n';
 import { Fragment, useState } from '@wordpress/element';
-import { BaseControl, Button } from '@wordpress/components';
-import { icons } from '@eightshift/frontend-libs/scripts/editor';
+import { BaseControl, Button, Tooltip } from '@wordpress/components';
+import { aspectRatio } from '@wordpress/icons';
 
-/**
- * A component that displays options adjustable across screen sizes beautifully.
- * 
- * @param {object} props                                - Heading level picker options.
- * @param {string?} [props.label]                       - Label displayed above the picker.
- * @param {string} [props.tooltip=Responsive overrides] - Tooltip of the toggle button.
- * @param {array} props.children                        - Items to show. First item is always visible, the rest are visible when the button is toggled.
- */
 export const Responsive = (props) => {
 	const {
 		label,
@@ -19,30 +11,21 @@ export const Responsive = (props) => {
 		children = [],
 	} = props;
 
-	const [isOpen, setIsOpen] = useState(false);
-
-	const responsiveClass = [
-		'es-responsive',
-		isOpen ? 'is-open' : '',
-	]
+	const [isOpen, setActive] = useState(false);
 
 	return (
 		<BaseControl
-			className={responsiveClass.join(' ')}
 			label={
-				<>
+				<Fragment>
 					{label}
-					<Button
-						isSecondary
-						isLarge
-						label={tooltip}
-						isPressed={isOpen}
-						icon={icons.responsiveOverrides}
-						onClick={() => setIsOpen(!isOpen)}
-					/>
-				</>
+					<Tooltip text={tooltip}>
+						<Button isDefault isSmall icon={aspectRatio} onClick={() => setActive(!isOpen)}></Button>
+					</Tooltip>
+				</Fragment>
 			}
+			className={'custom-responsive'}
 		>
+			<br />
 			{children.map((item, index) => {
 				return (
 					<Fragment key={index}>

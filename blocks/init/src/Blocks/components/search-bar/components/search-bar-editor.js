@@ -1,27 +1,26 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
 export const SearchBarEditor = (attributes) => {
 	const {
-		componentClass: manifestComponentClass,
-	} = manifest;
-
-	const {
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
-	} = attributes;
 
-	const searchBarUse = checkAttr('searchBarUse', attributes, manifest);
-	const searchBarMethod = checkAttr('searchBarMethod', attributes, manifest);
-	const searchBarPostType = checkAttr('searchBarPostType', attributes, manifest);
-	const searchBarAction = checkAttr('searchBarAction', attributes, manifest);
-	const searchBarPlaceholder = checkAttr('searchBarPlaceholder', attributes, manifest);
-	const searchBarId = checkAttr('searchBarId', attributes, manifest);
-	const searchBarLabel = checkAttr('searchBarLabel', attributes, manifest);
-	const searchBarLabelShow = checkAttr('searchBarLabelShow', attributes, manifest);
+		searchBarUse = checkAttr('searchBarUse', attributes, manifest, componentName),
+
+		searchBarMethod = checkAttr('searchBarMethod', attributes, manifest, componentName),
+		searchBarPostType = checkAttr('searchBarPostType', attributes, manifest, componentName),
+		searchBarAction = checkAttr('searchBarAction', attributes, manifest, componentName),
+		searchBarPlaceholder = checkAttr('searchBarPlaceholder', attributes, manifest, componentName),
+		searchBarId = checkAttr('searchBarId', attributes, manifest, componentName),
+		searchBarLabel = checkAttr('searchBarLabel', attributes, manifest, componentName),
+		searchBarLabelShow = checkAttr('searchBarLabelShow', attributes, manifest, componentName),
+	} = attributes;
 
 	const searchClass = classnames(
 		componentClass,
@@ -38,7 +37,7 @@ export const SearchBarEditor = (attributes) => {
 	]);
 
 	return (
-		<>
+		<Fragment>
 			{searchBarUse &&
 				<form
 					role="search"
@@ -66,6 +65,6 @@ export const SearchBarEditor = (attributes) => {
 					/>
 				</form>
 			}
-		</>
+		</Fragment>
 	);
 };

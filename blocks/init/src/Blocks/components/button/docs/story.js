@@ -31,14 +31,14 @@ export const toolbar = () => (
 
 export const size = () => (
 	<Fragment>
-		{manifest.options.buttonSize.map((values, index) => (
+		{manifest.options.sizes.map((values, index) => (
 			<Fragment key={index}>
 				<ButtonEditor
 					{...props}
 					buttonContent={values.label}
 					buttonSize={values.value}
 				/>
-				<br /><br />
+				<br />
 			</Fragment>
 		))}
 	</Fragment>
@@ -46,14 +46,29 @@ export const size = () => (
 
 export const width = () => (
 	<Fragment>
-		{manifest.options.buttonWidth.map((values, index) => (
+		{manifest.options.widths.map((values, index) => (
 			<Fragment key={index}>
 				<ButtonEditor
 					{...props}
 					buttonContent={values.label}
 					buttonWidth={values.value}
 				/>
-				<br /><br />
+				<br />
+			</Fragment>
+		))}
+	</Fragment>
+);
+
+export const align = () => (
+	<Fragment>
+		{manifest.options.aligns.map((values, index) => (
+			<Fragment key={index}>
+				<ButtonEditor
+					{...props}
+					buttonContent={values}
+					buttonAlign={values}
+				/>
+				<br />
 			</Fragment>
 		))}
 	</Fragment>
@@ -61,21 +76,14 @@ export const width = () => (
 
 export const colors = () => (
 	<Fragment>
-		{manifest.options.buttonColor.map((values, index) => (
+		{manifest.options.colors.map((values, index) => (
 			<Fragment key={index}>
 				<ButtonEditor
 					{...props}
 					buttonContent={values}
 					buttonColor={values}
 				/>
-				<br /><br />
-				<ButtonEditor
-					{...props}
-					buttonContent={`Button As Link - ${values}`}
-					buttonColor={values}
-					buttonIsLink={true}
-				/>
-				<br /><br />
+				<br />
 			</Fragment>
 		))}
 	</Fragment>

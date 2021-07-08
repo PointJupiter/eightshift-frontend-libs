@@ -1,3 +1,18 @@
+$jumbotron: (
+	site-container: global-settings(containers, default),
+	content: (
+		mobile: (
+			min-height: 400px,
+			padding: 15px global-settings(gutters, default),
+		),
+		tablet: (
+			min-height: 700px,
+			padding-top: 30px,
+			padding-bottom: 30px,
+		),
+	),
+);
+
 .jumbotron {
 	$this: &;
 	position: relative;
@@ -5,7 +20,7 @@
 	height: 100%;
 	width: 100%;
 
-	&__image {
+	&__image-wrap {
 		position: absolute;
 		left: 0;
 		top: 0;
@@ -14,16 +29,58 @@
 	}
 
 	&__content {
-		padding: 0.75em var(--global-gutters-default);
-		min-height: 35em;
+		@include responsive($jumbotron, content);
 		margin: 0 auto;
-		max-width: var(--global-containers-default);
+		max-width: map-get-strict($header, site-container);
 		position: relative;
 		z-index: 3;
 		display: flex;
 		height: 100%;
-		align-items: var(--jumbotron-content-position-horizontal, 'center');
-		justify-content: var(--jumbotron-content-position-vertical, 'center');
+
+		&[data-position='top left'] {
+			align-items: flex-start;
+			justify-content: flex-start;
+		}
+
+		&[data-position='top center'] {
+			align-items: flex-start;
+			justify-content: center;
+		}
+
+		&[data-position='top right'] {
+			align-items: flex-start;
+			justify-content: flex-end;
+		}
+
+		&[data-position='center left'] {
+			align-items: center;
+			justify-content: flex-start;
+		}
+
+		&[data-position='center center'] {
+			align-items: center;
+			justify-content: center;
+		}
+
+		&[data-position='center right'] {
+			align-items: center;
+			justify-content: flex-end;
+		}
+
+		&[data-position='bottom left'] {
+			align-items: flex-end;
+			justify-content: flex-start;
+		}
+
+		&[data-position='bottom center'] {
+			align-items: flex-end;
+			justify-content: center;
+		}
+
+		&[data-position='bottom right'] {
+			align-items: flex-end;
+			justify-content: flex-end;
+		}
 	}
 
 	&__content-wrap {
@@ -32,10 +89,10 @@
 	}
 
 	&__heading {
-		margin-bottom: 1em;
+		margin-bottom: 20px;
 	}
 
 	&__paragraph {
-		margin-bottom: 1.5em;
+		margin-bottom: 30px;
 	}
 }

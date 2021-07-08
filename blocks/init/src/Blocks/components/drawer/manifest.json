@@ -2,7 +2,6 @@
 	"componentName": "drawer",
 	"title": "Drawer",
 	"componentClass": "drawer",
-	"componentJsClass": "js-drawer",
 	"example": {
 		"attributes": {
 			"drawerPosition": "left",

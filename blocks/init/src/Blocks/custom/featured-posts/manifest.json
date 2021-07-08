@@ -12,43 +12,37 @@
 	],
 	"example": {
 		"attributes": {
-			"featuredPostsQuery": {
-				"postType": "post",
-				"taxonomy": "",
-				"terms": [],
-				"posts": []
+			"query": {
+				"postType": "post"
 			},
-			"featuredPostsItemsPerLine": 4,
-			"featuredPostsShowItems": 20,
-			"featuredPostsExcludeCurrentPost": false,
-			"featuredPostsServerSideRender": false
+			"itemsPerLine": 4,
+			"showItems": 20,
+			"serverSideRender": true
 		}
 	},
 	"attributes": {
-		"featuredPostsQuery": {
+		"query": {
 			"type": "object",
 			"default": {
 				"postType": "post",
-				"taxonomy": "",
-				"terms": [],
 				"posts": []
 			},
 			"items": {
 				"type": "object"
 			}
 		},
-		"featuredPostsItemsPerLine": {
+		"itemsPerLine": {
 			"type": "integer",
 			"default": 4
 		},
-		"featuredPostsShowItems": {
+		"showItems": {
 			"type": "integer"
 		},
-		"featuredPostsExcludeCurrentPost": {
+		"excludeCurrentPost": {
 			"type": "boolean",
 			"default": false
 		},
-		"featuredPostsServerSideRender": {
+		"serverSideRender": {
 			"type": "boolean",
 			"default": false
 		}
@@ -57,13 +51,10 @@
 		"postTypes": [
 			"post",
 			"page"
-		],
-		"taxonomies": [
-			"category"
 		]
 	},
 	"options": {
-		"featuredPostsItemsPerLine": {
+		"itemsPerLine": {
 			"min": 1,
 			"max": 4,
 			"step": 1

@@ -54,10 +54,6 @@
 			"type": "string"
 		},
 
-		"className": {
-			"type": "string"
-		},
-
 		"wrapperId": {
 			"type": "string"
 		},
@@ -253,8 +249,7 @@
 		],
 		"colors": [
 			"primary",
-			"black",
-			"white"
+			"black"
 		],
 		"widths": {
 			"min": 0,

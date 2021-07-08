@@ -1,25 +1,11 @@
-import React, { useMemo } from 'react';
-import { outputCssVariables, getUnique, props } from '@eightshift/frontend-libs/scripts/editor';
+import React from 'react';
 import { ButtonEditor as ButtonEditorComponent } from '../../../components/button/components/button-editor';
-import manifest from './../manifest.json';
-import globalManifest from './../../../manifest.json';
 
 export const ButtonEditor = ({ attributes, setAttributes }) => {
-	const unique = useMemo(() => getUnique(), []);
-
-	const {
-		blockClass,
-	} = attributes;
-
 	return (
-		<div className={blockClass} data-id={unique}>
-
-			{outputCssVariables(attributes, manifest, unique, globalManifest)}
-
-			<ButtonEditorComponent
-				{...props(attributes, 'button')}
-				setAttributes={setAttributes}
-			/>
-		</div>
+		<ButtonEditorComponent
+			{...attributes}
+			setAttributes={setAttributes}
+		/>
 	);
 };

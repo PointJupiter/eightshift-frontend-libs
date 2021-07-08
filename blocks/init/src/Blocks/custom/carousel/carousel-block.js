@@ -1,4 +1,5 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { overrideInnerBlockAttributes } from '@eightshift/frontend-libs/scripts/editor';
 import { InspectorControls } from '@wordpress/block-editor';
@@ -26,11 +27,11 @@ export const Carousel = (props) => {
 	});
 
 	return (
-		<>
+		<Fragment>
 			<InspectorControls>
 				<CarouselOptions {...props} />
 			</InspectorControls>
 			<CarouselEditor {...props} />
-		</>
+		</Fragment>
 	);
 };

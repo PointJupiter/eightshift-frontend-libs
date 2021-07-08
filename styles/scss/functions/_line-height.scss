@@ -37,11 +37,10 @@
 ///   }
 /// }
 ///
-@use 'sass:math';
 
 $browser-context: $base-font-size;
 
 // Calculate line-height in relative units from pixels.
 @function line-height($pixels, $context: $browser-context) {
-	@return #{math.div(strip-unit($pixels), strip-unit($context))};
+	@return #{strip-unit($pixels)/strip-unit($context)};
 }

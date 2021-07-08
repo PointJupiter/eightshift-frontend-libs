@@ -4,8 +4,9 @@ export class Accordion {
 	constructor(options) {
 		this.accordion = options.accordion;
 		this.accordionSelector = options.accordionSelector;
-		this.triggerSelector = options.triggerSelector;
-		this.panelSelector = options.panelSelector;
+
+		this.triggerSelector = `${options.accordionSelector}-trigger`;
+		this.panelSelector = `${options.accordionSelector}-panel`;
 
 		this.trigger = this.accordion.querySelectorAll(this.triggerSelector);
 

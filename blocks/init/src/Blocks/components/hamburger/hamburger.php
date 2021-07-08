@@ -9,20 +9,20 @@
 use EightshiftBoilerplateVendor\EightshiftLibs\Helpers\Components;
 
 $manifest = Components::getManifest(__DIR__);
+$componentName = $attributes['componentName'] ?? $manifest['componentName'];
 
-$hamburgerUse = Components::checkAttr('hamburgerUse', $attributes, $manifest);
+$hamburgerUse = Components::checkAttr('hamburgerUse', $attributes, $manifest, $componentName);
 if (!$hamburgerUse) {
 	return;
 }
 
 $componentClass = $attributes['componentClass'] ?? $manifest['componentClass'];
-$componentJsClass = $attributes['componentJsClass'] ?? $manifest['componentJsClass'];
 $selectorClass = $attributes['selectorClass'] ?? $componentClass;
 $blockClass = $attributes['blockClass'] ?? '';
 
 $hamburgerClass = Components::classnames([
 	$componentClass,
-	$componentJsClass,
+	Components::selector($componentClass, "js-{$componentClass}"),
 	Components::selector($blockClass, $blockClass, $selectorClass),
 ]);
 ?>

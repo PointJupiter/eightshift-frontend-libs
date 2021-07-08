@@ -1,62 +1,79 @@
-import React, { useMemo } from 'react';
-import _ from 'lodash';
-import { MediaPlaceholder } from '@wordpress/block-editor';
+import React from 'react';
+import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
-import { selector, checkAttr, getAttrKey } from '@eightshift/frontend-libs/scripts/helpers';
-import { outputCssVariables, getUnique } from '@eightshift/frontend-libs/scripts/editor';
+import { Fragment } from '@wordpress/element';
+import { Placeholder } from '@wordpress/components';
+import { image } from '@wordpress/icons';
+import { MediaPlaceholder } from '@wordpress/block-editor';
+import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
-import globalManifest from './../../../manifest.json';
 
 export const ImageEditor = (attributes) => {
-	const unique = useMemo(() => getUnique(), []);
-
-	const {
-		componentClass: manifestComponentClass,
-	} = manifest;
-
 	const {
 		setAttributes,
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
+
+		imageUse = checkAttr('imageUse', attributes, manifest, componentName),
+
+		imageUrl = checkAttr('imageUrl', attributes, manifest, componentName),
+		imageAlt = checkAttr('imageAlt', attributes, manifest, componentName),
+		imageAccept = checkAttr('imageAccept', attributes, manifest, componentName),
+		imageAllowedTypes = checkAttr('imageAllowedTypes', attributes, manifest, componentName),
+		imageBg = checkAttr('imageBg', attributes, manifest, componentName),
+		imageUsePlaceholder = checkAttr('imageBg', attributes, manifest, componentName),
+		imageAlign = checkAttr('imageAlign', attributes, manifest, componentName),
 	} = attributes;
 
-	const imageUse = checkAttr('imageUse', attributes, manifest);
-	const imageAlt = checkAttr('imageAlt', attributes, manifest);
-	const imageAccept = checkAttr('imageAccept', attributes, manifest);
-	const imageAllowedTypes = checkAttr('imageAllowedTypes', attributes, manifest);
-	const imageUrl = checkAttr('imageUrl', attributes, manifest);
+	const imageWrapClass = classnames([
+		selector(componentClass, `${componentClass}-wrap`),
+		selector(blockClass, blockClass, `${selectorClass}-wrap`),
+	]);
 
-	const pictureClass = classnames([
-		selector(componentClass, componentClass),
+	const imageClass = classnames([
+		componentClass,
+		selector(imageBg, componentClass, '', 'bg'),
 		selector(blockClass, blockClass, selectorClass),
 	]);
 
-	const imgClass = classnames([
-		selector(componentClass, componentClass, 'img'),
-		selector(blockClass, blockClass, `${selectorClass}-img`),
-	]);
-
 	return (
-		<>
+		<Fragment>
 			{imageUse &&
-				<>
-					{outputCssVariables(attributes, manifest, unique, globalManifest)}
+				<Fragment>
+					<div className={imageWrapClass} data-align={imageAlign}>
+						{(imageUrl !== '') &&
+							<Fragment>
+								{imageBg ?
+									<div className={imageClass} style={{ backgroundImage: `url(${imageUrl})` }} /> :
+									<img className={imageClass} src={imageUrl} alt={imageAlt} />
+								}
+							</Fragment>
+						}
 
-					{_.isEmpty(imageUrl) ?
-						<MediaPlaceholder
-							icon="format-image"
-							onSelect={(value) => setAttributes({[getAttrKey('imageUrl', attributes, manifest)]: value.url})}
-							accept={imageAccept}
-							allowedTypes={imageAllowedTypes}
-						/> :
-						<picture className={pictureClass} data-id={unique}>
-							<img className={imgClass} src={imageUrl} alt={imageAlt} />
-						</picture>
-					}
-				</>
+						{(imageUrl === '') &&
+							<Fragment>
+								{(!imageUsePlaceholder) ?
+									<MediaPlaceholder
+										icon="format-image"
+										onSelect={(value) => {
+											setAttributes({
+												[`${componentName}Url`]: value.url,
+												[`${componentName}Alt`]: value.alt
+											});
+										}}
+										accept={imageAccept}
+										allowedTypes={imageAllowedTypes}
+									/> :
+									<Placeholder icon={image} label={__('Please add image using sidebar options!', 'eightshift-frontend-libs')} />
+								}
+							</Fragment>
+						}
+					</div>
+				</Fragment>
 			}
-		</>
+		</Fragment>
 	);
 };
 

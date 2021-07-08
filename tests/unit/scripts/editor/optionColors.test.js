@@ -4,8 +4,6 @@
  * @group unit
  */
 
-const { getOptionColors } = require('../../../../scripts/editor/get-option-colors');
-
 // Mock for getPaletteColors() return value.
 const coreColors = {
 	"primary": {
@@ -40,10 +38,19 @@ const coreColors = {
 	}
 };
 
+const mockGetPaletteColors = jest.fn().mockReturnValue(coreColors);
+
+jest.mock('../../../../scripts/editor/get-palette-colors', () => ({
+	__esModule: true,
+	getPaletteColors: mockGetPaletteColors
+}));
+
+import { getOptionColors } from '../../../../scripts/editor/get-option-colors';
+
 it('tests optionColors helper returns correct color subset', () => {
 	const colors = getOptionColors(["primary", "white"]);
 
-	expect(colors).toStrictEqual(
+	expect(colors).toBe(
 		[
 			coreColors.primary,
 			coreColors.white
@@ -54,5 +61,5 @@ it('tests optionColors helper returns correct color subset', () => {
 it('tests optionColors helper fallbacks to core if no color is passed', () => {
 	const colors = getOptionColors();
 
-	expect(colors).toStrictEqual(Object.values(coreColors));
+	expect(colors).toBe(Object.values(coreColors));
 });

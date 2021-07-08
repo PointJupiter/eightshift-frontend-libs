@@ -10,42 +10,35 @@ use EightshiftBoilerplateVendor\EightshiftLibs\Helpers\Components;
 
 $manifest = Components::getManifest(__DIR__);
 
-$blockClass = $attributes['blockClass'] ?? '';
+$blockClass =  Components::checkAttr('blockClass', $attributes, $manifest);
+$query =  Components::checkAttr('query', $attributes, $manifest);
+$itemsPerLine =  Components::checkAttr('itemsPerLine', $attributes, $manifest);
+$serverSideRender =  Components::checkAttr('serverSideRender', $attributes, $manifest);
 
-$featuredCategoriesQuery = Components::checkAttr('featuredCategoriesQuery', $attributes, $manifest);
-$featuredCategoriesItemsPerLine = Components::checkAttr('featuredCategoriesItemsPerLine', $attributes, $manifest);
-$featuredCategoriesServerSideRender = Components::checkAttr('featuredCategoriesServerSideRender', $attributes, $manifest);
-
-$taxonomy = $featuredCategoriesQuery['taxonomy'] ?? '';
+$taxonomy = $query['taxonomy'] ?? '';
 
 if (!$taxonomy) {
 	return;
 }
 ?>
 
-<div
-	class="<?php echo esc_attr($blockClass); ?>"
-	data-items-per-line=<?php echo \esc_attr($featuredCategoriesItemsPerLine); ?>
->
+<div class="<?php echo esc_attr($blockClass); ?>" data-items-per-line=<?php echo \esc_attr($itemsPerLine); ?>>
 	<?php
 
-	$terms = $featuredCategoriesQuery['terms'] ?? [];
+	$terms = $query['terms'] ?? '';
 
 	$args = [
 		'hide_empty' => false,
 		'taxonomy' => $taxonomy,
-		'orderby' => 'include',
-		'include' => array_map(
-			function ($item) {
-				return $item['value'];
-			},
-			$terms
-		),
 	];
 
 	$allTerms = \get_terms($args);
 
 	foreach ($allTerms as $term) {
+		if ($terms && !in_array((string) $term->term_id, $terms, true)) { // phpcs:ignore Squiz.NamingConventions.ValidVariableName.NotCamelCaps
+			continue;
+		}
+
 		$cardProps = [
 			'imageUse' => false,
 			'introUse' => false,
@@ -55,7 +48,7 @@ if (!$taxonomy) {
 			'buttonUrl' => \get_term_link($term),
 		];
 
-		if ($featuredCategoriesServerSideRender) {
+		if ($serverSideRender) {
 			$cardProps['headingTag'] = 'div';
 			$cardProps['paragraphTag'] = 'div';
 		}
@@ -63,9 +56,11 @@ if (!$taxonomy) {
 
 		<div class="<?php echo esc_attr("{$blockClass}__item"); ?>">
 			<?php
-				echo Components::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					'card',
-					$cardProps
+				echo wp_kses_post(
+					Components::render(
+						'card',
+						$cardProps
+					)
 				);
 			?>
 		</div>

@@ -6,10 +6,6 @@ export { escapeString } from './escape-string';
 export { getNavigatorVibrate } from './navigator';
 export { responsiveSelectors } from './responsive-selectors';
 export { selector } from './selector';
-export {
-	checkAttr,
-	checkAttrResponsive,
-	getAttrKey
-} from './check-attr';
+export { checkAttr } from './check-attr';
 export { elementChildrenHeight } from './element-children-height';
 export { camelize } from './camelize';

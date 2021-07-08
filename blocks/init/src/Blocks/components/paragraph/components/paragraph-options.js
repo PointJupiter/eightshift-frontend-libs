@@ -1,22 +1,26 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { ColorPaletteCustom } from '@eightshift/frontend-libs/scripts/components';
 import { SelectControl, Icon, ToggleControl } from '@wordpress/components';
-import { checkAttr, getAttrKey } from '@eightshift/frontend-libs/scripts/helpers';
-import { icons, getOption } from '@eightshift/frontend-libs/scripts/editor';
+import { checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
+import { icons, getOptionColors } from '@eightshift/frontend-libs/scripts/editor';
 import manifest from './../manifest.json';
+
+const { options, title } = manifest;
 
 export const ParagraphOptions = (attributes) => {
 	const {
-		title: manifestTitle,
-	} = manifest;
-
-	const {
 		setAttributes,
-		label = manifestTitle,
+		componentName = manifest.componentName,
+		label = title,
 		paragraphShowControls = true,
 
-		showParagraphUse = true,
+		paragraphUse = checkAttr('paragraphUse', attributes, manifest, componentName),
+
+		paragraphColor = checkAttr('paragraphColor', attributes, manifest, componentName),
+		paragraphSize = checkAttr('paragraphSize', attributes, manifest, componentName),
+
 		showParagraphColor = true,
 		showParagraphSize = true,
 	} = attributes;
@@ -24,13 +28,9 @@ export const ParagraphOptions = (attributes) => {
 	if (!paragraphShowControls) {
 		return null;
 	}
-	
-	const paragraphUse = checkAttr('paragraphUse', attributes, manifest);
-	const paragraphColor = checkAttr('paragraphColor', attributes, manifest);
-	const paragraphSize = checkAttr('paragraphSize', attributes, manifest);
 
 	return (
-		<>
+		<Fragment>
 
 			{label &&
 				<h3 className={'options-label'}>
@@ -38,46 +38,44 @@ export const ParagraphOptions = (attributes) => {
 				</h3>
 			}
 
-			{showParagraphUse &&
-				<ToggleControl
-					label={sprintf(__('Use %s', 'eightshift-frontend-libs'), label)}
-					checked={paragraphUse}
-					onChange={(value) => setAttributes({ [getAttrKey('paragraphUse', attributes, manifest)]: value })}
-				/>
-			}
+			<ToggleControl
+				label={sprintf(__('Use %s', 'eightshift-frontend-libs'), label)}
+				checked={paragraphUse}
+				onChange={(value) => setAttributes({ [`${componentName}Use`]: value })}
+			/>
 
 			{paragraphUse &&
-				<>
+				<Fragment>
 					{showParagraphColor &&
 						<ColorPaletteCustom
 							label={
-								<>
+								<Fragment>
 									<Icon icon={icons.color} />
 									{__('Color', 'eightshift-frontend-libs')}
-								</>
+								</Fragment>
 							}
-							colors={getOption('paragraphColor', attributes, manifest, true)}
+							colors={getOptionColors(options.colors)}
 							value={paragraphColor}
-							onChange={(value) => setAttributes({ [getAttrKey('paragraphColor', attributes, manifest)]: value })}
+							onChange={(value) => setAttributes({ [`${componentName}Color`]: value })}
 						/>
 					}
 
 					{showParagraphSize &&
 						<SelectControl
 							label={
-								<>
+								<Fragment>
 									<Icon icon={icons.textSize} />
 									{__('Text size', 'eightshift-frontend-libs')}
-								</>
+								</Fragment>
 							}
 							value={paragraphSize}
-							options={getOption('paragraphSize', attributes, manifest)}
-							onChange={(value) => setAttributes({ [getAttrKey('paragraphSize', attributes, manifest)]: value })}
+							options={options.sizes}
+							onChange={(value) => setAttributes({ [`${componentName}Size`]: value })}
 						/>
 					}
-				</>
+				</Fragment>
 			}
 
-		</>
+		</Fragment>
 	);
 };

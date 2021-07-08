@@ -1,25 +1,23 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
+const { options } = manifest;
+
 export const VideoButtonEditor = (attributes) => {
 	const {
-		componentClass: manifestComponentClass,
-		options: manifestOptions,
-	} = manifest;
-
-	const {
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
+
+		videoButtonUse = checkAttr('videoButtonUse', attributes, manifest, componentName),
+
+		videoButtonModalId = checkAttr('videoButtonModalId', attributes, manifest, componentName),
+		videoButtonLabel = checkAttr('videoButtonLabel', attributes, manifest, componentName),
 	} = attributes;
-
-	const options = {...manifestOptions, ...attributes.options};
-
-	const videoButtonUse = checkAttr('videoButtonUse', attributes, manifest);
-	const videoButtonModalId = checkAttr('videoButtonModalId', attributes, manifest);
-	const videoButtonLabel = checkAttr('videoButtonLabel', attributes, manifest);
 
 	const videoButtonClass = classnames(
 		componentClass,
@@ -27,18 +25,18 @@ export const VideoButtonEditor = (attributes) => {
 	);
 
 	return (
-		<>
+		<Fragment>
 			{videoButtonUse &&
-				<>
+				<Fragment>
 					{videoButtonModalId &&
 						<button
 							className={`${videoButtonClass}`}
-							dangerouslySetInnerHTML={{ __html: options.icon }}
+							dangerouslySetInnerHTML={{ __html: options.icons }}
 							aria-label={videoButtonLabel}
 						></button>
 					}
-				</>
+				</Fragment>
 			}
-		</>
+		</Fragment>
 	);
 };

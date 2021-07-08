@@ -1,17 +1,18 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import { responsiveSelectors, selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
 export const WrapperEditor = ({ attributes, children }) => {
-
-	const wrapperUse = checkAttr('wrapperUse', attributes, manifest);
-	const wrapperUseSimple = checkAttr('wrapperUseSimple', attributes, manifest);
-	const wrapperDisable = checkAttr('wrapperDisable', attributes, manifest);
-	const wrapperId = checkAttr('wrapperId', attributes, manifest);
-	const wrapperBackgroundColor = checkAttr('wrapperBackgroundColor', attributes, manifest);
-	const wrapperParentClass = checkAttr('wrapperParentClass', attributes, manifest);
-	const className = checkAttr('className', attributes, manifest);
+	const {
+		wrapperUse = checkAttr('wrapperUse', attributes, manifest),
+		wrapperUseSimple = checkAttr('wrapperUseSimple', attributes, manifest),
+		wrapperDisable = checkAttr('wrapperDisable', attributes, manifest),
+		wrapperId = checkAttr('wrapperId', attributes, manifest),
+		wrapperBackgroundColor = checkAttr('wrapperBackgroundColor', attributes, manifest),
+		wrapperParentClass = checkAttr('wrapperParentClass', attributes, manifest),
+	} = attributes;
 
 	if (!wrapperUse || wrapperDisable) {
 		return children;
@@ -19,7 +20,7 @@ export const WrapperEditor = ({ attributes, children }) => {
 
 	if (!wrapperUse || wrapperDisable) {
 		return (
-			<>
+			<Fragment>
 				{wrapperParentClass ?
 					<div className={`${wrapperParentClass}__item`}>
 						<div className={`${wrapperParentClass}__item-inner`}>
@@ -28,7 +29,7 @@ export const WrapperEditor = ({ attributes, children }) => {
 					</div> :
 					children
 				}
-			</>
+			</Fragment>
 		);
 	}
 
@@ -121,7 +122,6 @@ export const WrapperEditor = ({ attributes, children }) => {
 		responsiveSelectors(wrapperDividerTop, 'divider-top', wrapperMainClass, false),
 		responsiveSelectors(wrapperDividerBottom, 'divider-bottom', wrapperMainClass, false),
 		responsiveSelectors(wrapperHide, 'hide-editor', wrapperMainClass, false),
-		className,
 	]);
 
 	const wrapperContainerClass = classnames([

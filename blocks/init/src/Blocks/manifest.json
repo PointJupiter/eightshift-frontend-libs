@@ -1,16 +1,10 @@
 {
 	"namespace": "eightshift-boilerplate",
-	"background": "#C3151B",
-	"foreground": "#FFFFFF",
+	"background": "#FFFFFF",
+	"foreground": "#0D3636",
 	"globalVariables": {
 		"customBlocksName": "eightshift-block",
 		"maxCols": 12,
-		"baseFont": "'Open Sans'",
-		"zIndex": {
-			"header": 100,
-			"drawer": 99,
-			"overlay": 98
-		},
 		"breakpoints": {
 			"mobile": 767,
 			"tablet": 991,
@@ -18,12 +12,12 @@
 			"large": 1200
 		},
 		"containers": {
-			"default": "66em"
+			"default": "1330px"
 		},
 		"gutters": {
 			"none": "0",
-			"default": "1.25em",
-			"big": "2.5em"
+			"default": "25px",
+			"big": "50px"
 		},
 		"sectionSpacing": {
 			"min":  -300,

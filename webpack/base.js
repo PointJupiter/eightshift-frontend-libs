@@ -4,11 +4,13 @@
  */
 
 const webpack = require('webpack');
+const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { convertJsonToSass } = require('./helpers');
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
+
 
 module.exports = (options) => {
 
@@ -30,13 +32,6 @@ module.exports = (options) => {
 		}));
 	}
 
-	// Provide variables to code build.
-	if (!options.overrides.includes('definePlugin')) {
-		plugins.push(new webpack.DefinePlugin({
-			'process.env.VERSION': JSON.stringify(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)),
-		}));
-	}
-
 	// Output css from Js.
 	if (!options.overrides.includes('miniCssExtractPlugin')) {
 		plugins.push(new MiniCssExtractPlugin({
@@ -53,7 +48,7 @@ module.exports = (options) => {
 	if (!options.overrides.includes('DependencyExtractionWebpackPlugin')) {
 		plugins.push(new DependencyExtractionWebpackPlugin({
 			outputFormat: 'json',
-			requestToExternal: function ( request ) { // eslint-disable-line consistent-return
+			requestToExternal: function ( request ) {
 				if ( request === '@wordpress/dom-ready' ) {
 					return '';
 				}
@@ -109,6 +104,13 @@ module.exports = (options) => {
 
 	// Module for Scss.
 	if (!options.overrides.includes('scss')) {
+		const globalSettingsPath = options.config.blocksManifestSettingsPath;
+		let globalSettings = {};
+
+		if (fs.existsSync(globalSettingsPath)) {
+			globalSettings = require(globalSettingsPath);
+		}
+
 		module.rules.push({
 			test: /\.scss$/,
 			exclude: /node_modules/,
@@ -126,8 +128,7 @@ module.exports = (options) => {
 				{
 					loader: 'sass-loader',
 					options: {
-						implementation: require("sass"),
-						additionalData: convertJsonToSass(options.config.blocksManifestSettingsPath),
+						additionalData: convertJsonToSass(globalSettings),
 					},
 				},
 				{

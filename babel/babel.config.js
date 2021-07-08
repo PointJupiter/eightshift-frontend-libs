@@ -15,15 +15,18 @@ module.exports = {
 			{
 				"loose": true
 			}
-		],
-		[
-			"@babel/plugin-proposal-private-methods",
-			{
-				"loose": true
-			}
-		],
+		]
 	],
 	env: {
-		test: {}
+		test: {
+			presets: [
+				[
+					'@babel/preset-env', {modules: 'commonjs'}
+				]
+			],
+			plugins: [
+				'@babel/plugin-transform-modules-commonjs'
+			]
+		}
 	}
 };

@@ -1,26 +1,22 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import classnames from 'classnames';
-import { outputCssVariables, getUnique, props } from '@eightshift/frontend-libs/scripts/editor';
 import { selector } from '@eightshift/frontend-libs/scripts/helpers';
 import { ImageEditor } from '../../image/components/image-editor';
 import { HeadingEditor } from '../../heading/components/heading-editor';
 import { ParagraphEditor } from '../../paragraph/components/paragraph-editor';
 import { ButtonEditor } from '../../button/components/button-editor';
 import manifest from './../manifest.json';
-import globalManifest from './../../../manifest.json';
 
 export const CardEditor = (attributes) => {
-	const unique = useMemo(() => getUnique(), []);
-
-	const {
-		componentClass: manifestComponentClass,
-	} = manifest;
-
 	const {
 		setAttributes,
-		componentClass = manifestComponentClass,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
+		introContent,
+		introColor,
+		introSize,
+		introAlign,
 	} = attributes;
 
 	const cardClass = classnames([
@@ -29,37 +25,40 @@ export const CardEditor = (attributes) => {
 	]);
 
 	return (
-		<div className={cardClass} data-id={unique}>
-
-			{outputCssVariables(attributes, manifest, unique, globalManifest)}
+		<div className={cardClass}>
 
 			<ImageEditor
-				{...props(attributes, 'image')}
+				{...attributes}
 				setAttributes={setAttributes}
 				blockClass={componentClass}
 			/>
 
 			<HeadingEditor
-				{...props(attributes, 'intro')}
+				{...attributes}
+				componentName={'intro'}
+				headingContent={introContent}
+				headingColor={introColor}
+				headingSize={introSize}
+				headingAlign={introAlign}
 				setAttributes={setAttributes}
 				selectorClass={'intro'}
 				blockClass={componentClass}
 			/>
 
 			<HeadingEditor
-				{...props(attributes, 'heading')}
+				{...attributes}
 				setAttributes={setAttributes}
 				blockClass={componentClass}
 			/>
+
 
 			<ParagraphEditor
-				{...props(attributes, 'paragraph')}
+				{...attributes}
 				setAttributes={setAttributes}
 				blockClass={componentClass}
 			/>
-
 			<ButtonEditor
-				{...props(attributes, 'button')}
+				{...attributes}
 				setAttributes={setAttributes}
 				blockClass={componentClass}
 			/>

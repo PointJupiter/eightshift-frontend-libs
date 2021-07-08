@@ -1,4 +1,5 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
 import { CardEditor } from './components/card-editor';
 import { CardToolbar } from './components/card-toolbar';
@@ -6,7 +7,7 @@ import { CardOptions } from './components/card-options';
 
 export const Card = (props) => {
 	return (
-		<>
+		<Fragment>
 			<InspectorControls>
 				<CardOptions {...props} />
 			</InspectorControls>
@@ -14,6 +15,6 @@ export const Card = (props) => {
 				<CardToolbar {...props} />
 			</BlockControls>
 			<CardEditor {...props} />
-		</>
+		</Fragment>
 	);
 };

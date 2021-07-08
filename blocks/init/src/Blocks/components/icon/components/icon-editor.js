@@ -1,22 +1,21 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import classnames from 'classnames';
+import { Fragment } from '@wordpress/element';
 import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
+const { icons } = manifest;
+
 export const IconEditor = (attributes) => {
 	const {
-		componentClass: manifestComponentClass,
-		icons: manifestIcons,
-	} = manifest;
-
-	const {
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
-	} = attributes;
 
-	const iconUse = checkAttr('iconUse', attributes, manifest);
-	const iconSelectedIcon = checkAttr('iconSelectedIcon', attributes, manifest);
+		iconUse = checkAttr('iconUse', attributes, manifest, componentName),
+		iconName = checkAttr('iconName', attributes, manifest, componentName),
+	} = attributes;
 
 	const iconClass = classnames([
 		componentClass,
@@ -24,10 +23,10 @@ export const IconEditor = (attributes) => {
 	]);
 
 	return (
-		<>
+		<Fragment>
 			{iconUse &&
-				<i className={iconClass} dangerouslySetInnerHTML={{ __html: manifestIcons[iconSelectedIcon] }}></i>
+				<i className={iconClass} dangerouslySetInnerHTML={{ __html: icons[iconName] }}></i>
 			}
-		</>
+		</Fragment>
 	);
 };

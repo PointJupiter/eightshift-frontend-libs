@@ -1,29 +1,27 @@
 import React from 'react';
 import { __ } from '@wordpress/i18n';
+import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import { RichText } from '@wordpress/block-editor';
-import { selector, checkAttr, getAttrKey } from '@eightshift/frontend-libs/scripts/helpers';
+import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
+
+const { options } = manifest;
 
 export const AccordionEditor = (attributes) => {
 	const {
-		componentClass: manifestComponentClass,
-		options: manifestOptions,
-	} = manifest;
-	
-	const {
 		setAttributes,
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
 		placeholder = __('Add Content', 'eightshift-frontend-libs'),
+
+		accordionUse = checkAttr('accordionUse', attributes, manifest, componentName),
+
+		accordionTitle = checkAttr('accordionTitle', attributes, manifest, componentName),
+		accordionContent = checkAttr('accordionContent', attributes, manifest, componentName),
 	} = attributes;
-
-	const options = {...manifestOptions, ...attributes.options};
-
-	const accordionUse = checkAttr('accordionUse', attributes, manifest);
-	const accordionTitle = checkAttr('accordionTitle', attributes, manifest);
-	const accordionContent = checkAttr('accordionContent', attributes, manifest);
 
 	const accordionClass = classnames([
 		componentClass,
@@ -31,7 +29,7 @@ export const AccordionEditor = (attributes) => {
 	]);
 
 	return (
-		<>
+		<Fragment>
 			{accordionUse &&
 				<div
 					className={accordionClass}
@@ -40,9 +38,9 @@ export const AccordionEditor = (attributes) => {
 						<RichText
 							placeholder={placeholder}
 							value={accordionTitle}
-							onChange={(value) => setAttributes({ [getAttrKey('accordionTitle', attributes, manifest)]: value })}
+							onChange={(value) => setAttributes({ [`${componentName}Title`]: value })}
 							keepPlaceholderOnFocus
-							allowedFormats={[]}
+							formattingControls={[]}
 						/>
 						<div className={`${componentClass}__icon`} dangerouslySetInnerHTML={{ __html: options.icon }}></div>
 					</button>
@@ -53,6 +51,6 @@ export const AccordionEditor = (attributes) => {
 					</section>
 				</div>
 			}
-		</>
+		</Fragment>
 	);
 };

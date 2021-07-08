@@ -1,21 +1,18 @@
 import React from 'react';
+import { Fragment } from '@wordpress/element';
 import classnames from 'classnames';
 import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
 export const HamburgerEditor = (attributes) => {
 	const {
-		componentClass: manifestComponentClass,
-	} = manifest;
-
-
-	const {
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
-	} = attributes;
 
-	const hamburgerUse = checkAttr('hamburgerUse', attributes, manifest);
+		hamburgerUse = checkAttr('hamburgerUse', attributes, manifest, componentName),
+	} = attributes;
 
 	const hamburgerClass = classnames([
 		componentClass,
@@ -24,7 +21,7 @@ export const HamburgerEditor = (attributes) => {
 	]);
 
 	return (
-		<>
+		<Fragment>
 			{hamburgerUse &&
 				<button className={hamburgerClass}>
 					<span className={`${componentClass}__wrap`}>
@@ -34,6 +31,6 @@ export const HamburgerEditor = (attributes) => {
 					</span>
 				</button>
 			}
-		</>
+		</Fragment>
 	);
 };

@@ -4,14 +4,10 @@
 	"componentClass": "image",
 	"example": {
 		"attributes": {
-			"imageUrl": "https://loremflickr.com/1000/800",
-			"imageUrlDesktop": "https://loremflickr.com/800/600",
-			"imageUrlTablet": "https://loremflickr.com/600/400",
-			"imageUrlMobile": "https://loremflickr.com/300/200",
-			"imageAccept": "image/*",
-			"imageAllowedTypes": ["image"],
-			"imageAlt": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-			"imageFull": false,
+			"imageUrl": "https://raw.githubusercontent.com/infinum/eightshift-frontend-libs/develop/package/logo.svg?raw=true&sanitize=true",
+			"imageAlign": "center center",
+			"imageLink": "https://infinum.github.io/eightshift-docs/",
+			"imageAlt": "Some image description",
 			"imageUse": true
 		}
 	},
@@ -19,13 +15,11 @@
 		"imageUrl": {
 			"type": "string"
 		},
-		"imageUrlDesktop": {
-			"type": "string"
+		"imageAlign": {
+			"type": "string",
+			"default": "center center"
 		},
-		"imageUrlTablet": {
-			"type": "string"
-		},
-		"imageUrlMobile": {
+		"imageLink": {
 			"type": "string"
 		},
 		"imageAccept": {
@@ -36,37 +30,20 @@
 			"type": "array",
 			"default": ["image"]
 		},
-		"imageAlt": {
-			"type": "string"
-		},
-		"imageFull": {
+		"imageBg": {
 			"type": "boolean",
 			"default": false
+		},
+		"imageUsePlaceholder": {
+			"type": "boolean",
+			"default": false
+		},
+		"imageAlt": {
+			"type": "string"
 		},
 		"imageUse": {
 			"type": "boolean",
 			"default": true
-		}
-	},
-	"responsiveAttributes": {
-		"imageUrl": {
-			"large": "imageUrl",
-			"desktop": "imageUrlDesktop",
-			"tablet": "imageUrlTablet",
-			"mobile": "imageUrlMobile"
-		}
-	},
-	"variables": {
-		"imageFull": {
-			"true": [
-				{
-					"variable": {
-						"image-width": "100%",
-						"image-img-width": "100%",
-						"image-img-max-width": "none"
-					}
-				}
-			]
 		}
 	}
 }

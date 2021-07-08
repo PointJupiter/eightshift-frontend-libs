@@ -8,58 +8,52 @@
 
 use EightshiftBoilerplateVendor\EightshiftLibs\Helpers\Components;
 
-$globalManifest = Components::getManifest(dirname(__DIR__, 2));
 $manifest = Components::getManifest(__DIR__);
+$componentName = $attributes['componentName'] ?? $manifest['componentName'];
 
-$imageUse = Components::checkAttr('imageUse', $attributes, $manifest);
+$imageUse = Components::checkAttr('imageUse', $attributes, $manifest, $componentName);
 if (!$imageUse) {
 	return;
 }
-
-$unique = Components::getUnique();
-echo Components::outputCssVariables($attributes, $manifest, $unique, $globalManifest); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 $componentClass = $attributes['componentClass'] ?? $manifest['componentClass'];
 $selectorClass = $attributes['selectorClass'] ?? $componentClass;
 $blockClass = $attributes['blockClass'] ?? '';
 
-$imageAlt = Components::checkAttr('imageAlt', $attributes, $manifest);
+$imageUrl = Components::checkAttr('imageUrl', $attributes, $manifest, $componentName);
+$imageLink = Components::checkAttr('imageLink', $attributes, $manifest, $componentName);
+$imageBg = Components::checkAttr('imageBg', $attributes, $manifest, $componentName);
+$imageAlign = Components::checkAttr('imageAlign', $attributes, $manifest, $componentName);
+$imageAlt = Components::checkAttr('imageAlt', $attributes, $manifest, $componentName);
 
-$imageUrl = Components::checkAttrResponsive('imageUrl', $attributes, $manifest);
-
-$pictureClass = Components::classnames([
-	Components::selector($componentClass, $componentClass),
-	Components::selector($blockClass, $blockClass, $selectorClass),
+$imageWrapClass = Components::classnames([
+	Components::selector($componentClass, "{$componentClass}-wrap"),
+	Components::selector($blockClass, $blockClass, "{$selectorClass}-wrap"),
+	Components::selector($imageLink, $imageLink, $componentClass, 'is-link'),
 ]);
 
-$imgClass = Components::classnames([
-	Components::selector($componentClass, $componentClass, 'img'),
-	Components::selector($blockClass, $blockClass, "{$selectorClass}-img"),
+$imageClass = Components::classnames([
+	$componentClass,
+	Components::selector($imageBg, $componentClass, '', 'bg'),
+	Components::selector($blockClass, $blockClass, $selectorClass),
 ]);
 
 ?>
 
-<?php if (isset($imageUrl['large']) && $imageUrl['large']) { ?>
-	<picture class="<?php echo \esc_attr($pictureClass); ?>" data-id="<?php echo esc_attr($unique); ?>">
-		<?php foreach (array_reverse($imageUrl) as $brakepoint => $item) { ?>
-			<?php
-			if ($brakepoint === 'large') {
-				continue;
-			}
-			if (!$item) {
-				continue;
-			}
+<?php if ($imageLink) { ?>
+	<a href="<?php echo \esc_url($imageLink); ?>" class="<?php echo \esc_attr($imageWrapClass); ?>">
+<?php } else { ?>
+	<div class="<?php echo \esc_attr($imageWrapClass); ?>" data-align="<?php echo \esc_attr($imageAlign); ?>">
+<?php } ?>
 
-			$brakepointValue = $globalManifest['globalVariables']['breakpoints'][$brakepoint] ?? '';
+	<?php if ($imageBg) { ?>
+		<div style="background-image:url(<?php echo \esc_url($imageUrl); ?>)" class="<?php echo \esc_attr($imageClass); ?>" ></div>
+	<?php } else { ?>
+		<img src="<?php echo \esc_url($imageUrl); ?>" class="<?php echo \esc_attr($imageClass); ?>" alt="<?php echo \esc_attr($imageAlt); ?>"/>
+	<?php } ?>
 
-			if (!$brakepointValue) {
-				continue;
-			}
-
-			echo '<source srcset="' . \esc_url($item) . '" media="(max-width: ' . esc_attr($brakepointValue) . 'px)" />'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			?>
-		<?php } ?>
-
-		<img src="<?php echo \esc_url($imageUrl['large']); ?>" class="<?php echo \esc_attr($imgClass); ?>" />
-	</picture>
+<?php if ($imageLink) { ?>
+	</a>
+<?php } else { ?>
+	</div>
 <?php } ?>

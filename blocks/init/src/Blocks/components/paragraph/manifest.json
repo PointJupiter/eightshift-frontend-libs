@@ -7,6 +7,7 @@
 			"paragraphContent": "This is paragraph",
 			"paragraphSize": "default",
 			"paragraphColor": "black",
+			"paragraphAlign": "left",
 			"paragraphUse": true
 		}
 	},
@@ -23,84 +24,34 @@
 			"type": "string",
 			"default": "black"
 		},
+		"paragraphAlign": {
+			"type": "string",
+			"default": "left"
+		},
 		"paragraphUse": {
 			"type": "boolean",
 			"default": true
 		}
 	},
 	"options": {
-		"paragraphSize": [
+		"sizes": [
 			{
-				"label": "Default (1em)",
+				"label": "Default (22px)",
 				"value": "default"
 			},
 			{
-				"label": "Small (0.8em)",
+				"label": "Small (18px)",
 				"value": "small"
 			}
 		],
-		"paragraphColor": [
-			"black",
-			"primary"
+		"aligns": [
+			"left",
+			"center",
+			"right"
 		],
-		"pasteAllowTags": [
-			"strong",
-			"b",
-			"i",
-			"em",
-			"span"
+		"colors": [
+			"primary",
+			"black"
 		]
-	},
-	"variables": {
-		"paragraphSize": {
-			"default": [
-				{
-					"variable": {
-						"paragraph-font-size": "0.8em",
-						"paragraph-line-height": "1"
-					}
-				},
-				{
-					"breakpoint": "tablet",
-					"variable": {
-						"paragraph-font-size": "1em"
-					}
-				}
-			],
-			"small": [
-				{
-					"variable": {
-						"paragraph-font-size": "0.6em",
-						"paragraph-line-height": "1"
-					}
-				},
-				{
-					"breakpoint": "tablet",
-					"variable": {
-						"paragraph-font-size": "0.8em"
-					}
-				}
-			]
-		},
-		"paragraphColor": {
-			"primary": [
-				{
-					"variable": {
-						"paragraph-color": "var(--global-colors-primary)",
-						"paragraph-link-color": "var(--global-colors-black)",
-						"paragraph-link-color-hover": "var(--global-colors-light)"
-					}
-				}
-			],
-			"black": [
-				{
-					"variable": {
-						"paragraph-color": "var(--global-colors-black)",
-						"paragraph-link-color": "var(--global-colors-primary)",
-						"paragraph-link-color-hover": "var(--global-colors-light)"
-					}
-				}
-			]
-		}
 	}
 }

@@ -1,9 +1,14 @@
 export class Drawer {
-	constructor(options) {
-		this.CLASS_IS_OPEN = 'menu-is-open';
-		this.CLASS_OVERLAY_IS_SHOWING = 'page-overlay-shown';
-		this.CLASS_NO_SCROLL = 'u-no-scroll';
-		this.drawer = document.querySelector(options.drawerSelector);
+	constructor(
+		selector = '.js-drawer',
+		CLASS_IS_OPEN = 'menu-is-open',
+		CLASS_OVERLAY_IS_SHOWING = 'page-overlay-shown',
+		CLASS_NO_SCROLL = 'u-no-scroll'
+	) {
+		this.CLASS_IS_OPEN = CLASS_IS_OPEN;
+		this.CLASS_OVERLAY_IS_SHOWING = CLASS_OVERLAY_IS_SHOWING;
+		this.CLASS_NO_SCROLL = CLASS_NO_SCROLL;
+		this.drawer = document.querySelector(selector);
 		this.trigger = document.querySelector(`.${this.drawer.getAttribute('data-trigger')}`);
 		this.overlay = null;
 
@@ -49,7 +54,7 @@ export class Drawer {
 		}
 	}
 
-	init() {
+	drawerInit() {
 		this.trigger.addEventListener('click', () => {
 			if (document.body.classList.contains(this.CLASS_IS_OPEN)) {
 				this.closeMobileMenu();

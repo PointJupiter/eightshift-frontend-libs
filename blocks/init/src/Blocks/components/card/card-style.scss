@@ -1,19 +1,17 @@
 .card-simple {
-	text-align: var(--block-card-align);
-
 	&__image {
-		padding-bottom: 1.5em;
+		margin-bottom: 30px;
 	}
 
 	&__intro {
-		padding-bottom: 0.5em;
+		margin-bottom: 10px;
 	}
 
 	&__heading {
-		padding-bottom: 0.5em;
+		margin-bottom: 10px;
 	}
 
 	&__paragraph {
-		padding-bottom: 1.5em;
+		margin-bottom: 30px;
 	}
 }

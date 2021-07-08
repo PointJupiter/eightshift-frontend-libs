@@ -1,4 +1,5 @@
 $menu-horizontal: (
+	link-padding: 0 15px,
 	link-modifiers: (
 		normal: (
 			color: global-settings(colors, black),
@@ -22,7 +23,7 @@ $menu-horizontal: (
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0 0.75em;
+		padding: map-get-strict($menu-horizontal, link-padding);
 		transition: 0.3s color ease-in-out;
 
 		@include link($menu-horizontal, link-modifiers);

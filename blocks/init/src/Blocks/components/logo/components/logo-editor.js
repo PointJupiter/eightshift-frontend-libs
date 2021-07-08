@@ -1,24 +1,23 @@
 import React from 'react';
 import classnames from 'classnames';
+import { Fragment } from '@wordpress/element';
 import { selector, checkAttr } from '@eightshift/frontend-libs/scripts/helpers';
 import manifest from './../manifest.json';
 
 export const LogoEditor = (attributes) => {
 	const {
-		componentClass: manifestComponentClass,
-	} = manifest;
-
-	const {
-		componentClass = manifestComponentClass,
+		componentName = manifest.componentName,
+		componentClass = manifest.componentClass,
 		selectorClass = componentClass,
 		blockClass,
-	} = attributes;
 
-	const logoUse = checkAttr('logoUse', attributes, manifest);
-	const logoSrc = checkAttr('logoSrc', attributes, manifest);
-	const logoAlt = checkAttr('logoAlt', attributes, manifest);
-	const logoTitle = checkAttr('logoTitle', attributes, manifest);
-	const logoHref = checkAttr('logoHref', attributes, manifest);
+		logoUse = checkAttr('logoUse', attributes, manifest, componentName),
+
+		logoSrc = checkAttr('logoSrc', attributes, manifest, componentName),
+		logoAlt = checkAttr('logoAlt', attributes, manifest, componentName),
+		logoTitle = checkAttr('logoTitle', attributes, manifest, componentName),
+		logoHref = checkAttr('logoHref', attributes, manifest, componentName),
+	} = attributes;
 
 	const logoClass = classnames([
 		componentClass,
@@ -30,7 +29,7 @@ export const LogoEditor = (attributes) => {
 	]);
 
 	return (
-		<>
+		<Fragment>
 			{logoUse &&
 				<a className={logoClass} href={logoHref}>
 					<img
@@ -41,6 +40,6 @@ export const LogoEditor = (attributes) => {
 					/>
 				</a>
 			}
-		</>
+		</Fragment>
 	);
 };

@@ -15,8 +15,7 @@
 /// .test {
 ///   width: calc-column-width(10);
 /// }
-@use 'sass:math';
 
 @function calc-column-width($cols: $base-col-number) {
-	@return math.div(100, $cols) + 0%;
+	@return (100/$cols) + 0%;
 }

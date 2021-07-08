@@ -4,52 +4,48 @@
 	"componentClass": "video",
 	"example": {
 		"attributes": {
-			"videoUrl": [
-				{
-					"url": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-					"mime": "video/mp4"
-				}
-			],
-			"videoPoster": "https://loremflickr.com/300/200",
-			"videoAccept": ".mp4,.webm",
-			"videoAllowedTypes": ["video/mp4", "video/webm"],
+			"videoUrl": "1Oc5PTrmFOw",
+			"videoType": "youtube",
+			"videoAspectRatio": "default",
+			"videoAccept": "video/*",
+			"videoAllowedTypes": ["video"],
+			"videoAllow": "autoplay; fullscreen",
+			"videoBg": false,
+			"videoUsePlaceholder": false,
 			"videoUse": true
 		}
 	},
 	"attributes": {
 		"videoUrl": {
-			"type": "array"
+			"type": "string"
+		},
+		"videoType": {
+			"type": "string",
+			"default": "youtube"
+		},
+		"videoAspectRatio": {
+			"type": "string",
+			"default": "default"
 		},
 		"videoAccept": {
 			"type": "string",
-			"default": ".mp4,.webm"
+			"default": "video/*"
 		},
 		"videoAllowedTypes": {
 			"type": "array",
-			"default": ["video/mp4", "video/webm"]
+			"default": ["video"]
 		},
-		"videoLoop": {
-			"type": "boolean",
-			"default": true
+		"videoAllow": {
+			"type": "string",
+			"default": "autoplay; fullscreen"
 		},
-		"videoAutoplay": {
-			"type": "boolean",
-			"default": true
-		},
-		"videoControls": {
+		"videoBg": {
 			"type": "boolean",
 			"default": false
 		},
-		"videoMuted": {
+		"videoUsePlaceholder": {
 			"type": "boolean",
-			"default": true
-		},
-		"videoPreload": {
-			"type": "string",
-			"default": "metadata"
-		},
-		"videoPoster": {
-			"type": "string"
+			"default": false
 		},
 		"videoUse": {
 			"type": "boolean",
@@ -57,19 +53,34 @@
 		}
 	},
 	"options": {
-		"videoPreload": [
+		"types": [
 			{
-				"label": "Auto",
-				"value": "auto"
+				"label": "Youtube",
+				"value": "youtube"
 			},
 			{
-				"label": "Metadata",
-				"value": "metadata"
+				"label": "Vimeo",
+				"value": "vimeo"
 			},
 			{
-				"label": "None",
-				"value": "none"
+				"label": "Local",
+				"value": "local"
 			}
+		],
+		"aspectRatioSizes": [
+			{
+				"label": "16:9",
+				"value": "default"
+			},
+			{
+				"label": "21:9",
+				"value": "twentyone-nine"
+			}
+		],
+		"aligns": [
+			"left",
+			"center",
+			"right"
 		]
 	}
 }

@@ -1,9 +1,12 @@
-.accordion {
-	--accordion-scoped-icon-size: 1.5em;
+$accordion: (
+	border-color: global-settings(colors, light),
+	icon-size: 30px,
+);
 
+.accordion {
 	$this: &;
 	position: relative;
-	border-bottom: 0.05em solid var(--global-colors-light);
+	border-bottom: 1px solid map-get-strict($accordion, border-color);
 
 	&[data-accordion-open='true'] {
 		> #{$this}__trigger {
@@ -13,7 +16,7 @@
 		}
 
 		> #{$this}__panel {
-			max-height: 75em;
+			max-height: 1500px;
 		}
 	}
 
@@ -40,8 +43,8 @@
 			timing-function: ease-in;
 			duration: 0.3s;
 		}
-		padding: 1em 1.25em;
-		font-size: 0.8em;
+		padding: 20px 25px;
+		font-size: 16px;
 		line-height: 1.4;
 
 		&:active {
@@ -53,10 +56,10 @@
 		position: absolute;
 		top: 50%;
 		transform: translateY(-50%);
-		height: var(--accordion-scoped-icon-size);
-		width: var(--accordion-scoped-icon-size);
+		height: map-get-strict($accordion, icon-size);
+		width: map-get-strict($accordion, icon-size);
 		pointer-events: none;
-		right: 1.25em;
+		right: 25px;
 		transition: {
 			property: transform;
 			timing-function: ease-in;
@@ -64,12 +67,12 @@
 		}
 
 		svg {
-			height: var(--accordion-scoped-icon-size);
-			width: var(--accordion-scoped-icon-size);
+			height: map-get-strict($accordion, icon-size);
+			width: map-get-strict($accordion, icon-size);
 		}
 	}
 
 	&__content {
-		padding: 1.25em;
+		padding: 25px;
 	}
 }
